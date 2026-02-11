@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Register - Why Not Project</title>
+
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+
+<script>
+tailwind.config = {
+ darkMode: "class",
+ theme: {
+  extend: {
+   colors:{
+    primary:"#13ec6d",
+    "background-light":"#f6f8f7",
+    "background-dark":"#102218"
+   },
+   fontFamily:{display:["Lexend"]}
+  }
+ }
+}
+</script>
+
+<style>
+body{font-family:'Lexend',sans-serif;}
+</style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark">
+
+<div class="max-w-[430px] mx-auto min-h-screen flex flex-col">
+
+<!-- Top Bar -->
+<div class="flex items-center p-4">
+<span onclick="history.back()" class="material-symbols-outlined cursor-pointer">arrow_back_ios_new</span>
+<h2 class="flex-1 text-center font-bold text-sm uppercase opacity-60">Create Account</h2>
+</div>
+
+<!-- FORM -->
+<div class="px-6 mt-6 flex flex-col gap-4">
+
+<input class="p-3 rounded-xl border" placeholder="Full Name"/>
+<input class="p-3 rounded-xl border" placeholder="College Email"/>
+<input class="p-3 rounded-xl border" placeholder="Roll Number"/>
+<input type="password" class="p-3 rounded-xl border" placeholder="Password"/>
+<input type="password" class="p-3 rounded-xl border" placeholder="Confirm Password"/>
+
+<button class="bg-primary text-background-dark font-bold py-3 rounded-full mt-4">
+Register
+</button>
+
+<p class="text-center text-sm opacity-60 mt-4">
+Already have account? <a href="login.html" class="text-primary">Login</a>
+</p>
+
+</div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Feedback - Why Not Project</title>
+
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+
+<script>
+tailwind.config = {
+ darkMode:"class",
+ theme:{
+  extend:{
+   colors:{
+    primary:"#13ec6d",
+    "background-light":"#f6f8f7",
+    "background-dark":"#102218"
+   },
+   fontFamily:{display:["Lexend"]}
+  }
+ }
+}
+</script>
+
+<style>
+body{font-family:'Lexend',sans-serif;}
+</style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display">
+
+<div class="min-h-screen px-12 py-10">
+
+<!-- HEADER -->
+<div class="flex items-center gap-3 mb-10">
+  <span onclick="location.href='dashboard.html'"
+        class="material-symbols-outlined cursor-pointer text-3xl text-primary">
+        arrow_back_ios_new
+  </span>
+  <h1 class="text-3xl font-bold">Feedback</h1>
+</div>
+
+<!-- CENTER WRAPPER -->
+<div class="flex justify-center">
+
+<!-- CARD -->
+<div class="bg-white dark:bg-background-dark/50 rounded-xl shadow-xl p-10 w-full max-w-3xl">
+
+<p class="opacity-60 mb-8 text-lg">
+We value your feedback. Help us improve the system experience.
+</p>
+
+<!-- RATING -->
+<div class="mb-8">
+<p class="font-semibold mb-3 text-lg">Rate Your Experience</p>
+<div class="flex gap-3 text-4xl text-primary cursor-pointer">
+<span class="material-symbols-outlined">star</span>
+<span class="material-symbols-outlined">star</span>
+<span class="material-symbols-outlined">star</span>
+<span class="material-symbols-outlined">star</span>
+<span class="material-symbols-outlined">star</span>
+</div>
+</div>
+
+<!-- FORM -->
+<div class="grid grid-cols-1 gap-6">
+
+<input class="p-4 rounded-xl border text-lg"
+       placeholder="Your Name (Optional)">
+
+<textarea rows="5"
+          class="p-4 rounded-xl border text-lg"
+          placeholder="Write your feedback here..."></textarea>
+
+<button class="bg-primary text-background-dark font-bold py-4 rounded-full text-lg hover:shadow-lg transition">
+Submit Feedback
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>

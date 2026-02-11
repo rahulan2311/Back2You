@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dashboard - Back2You</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+
+<script>
+tailwind.config = {
+ darkMode:"class",
+ theme:{
+  extend:{
+   colors:{
+    primary:"#13ec6d",
+    "background-light":"#f6f8f7",
+    "background-dark":"#102218"
+   },
+   fontFamily:{display:["Lexend"]}
+  }
+ }
+}
+</script>
+
+<style>
+body{font-family:'Lexend',sans-serif;}
+</style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display">
+
+<div class="flex min-h-screen">
+
+<!-- SIDEBAR -->
+<div class="w-64 bg-white dark:bg-background-dark/70 shadow-lg p-6 hidden md:block">
+
+<h2 class="text-xl font-bold mb-6">Back2You</h2>
+
+<nav class="flex flex-col gap-4 text-sm">
+
+<a href="dashboard.html" class="font-semibold text-primary">Dashboard</a>
+
+<a href="index.html" class="text-red-500">Logout</a>
+
+</nav>
+
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="flex-1 p-8">
+
+<!-- TOP BAR -->
+<div class="flex justify-between items-center mb-8">
+<h1 class="text-2xl font-bold">Dashboard</h1>
+<p class="opacity-60">Welcome Back 👋</p>
+</div>
+
+<!-- STATS GRID -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+
+<div class="bg-white dark:bg-background-dark/50 p-6 rounded-xl shadow">
+<p class="opacity-60 text-sm">Lost Items</p>
+<p class="text-3xl font-bold text-primary">00</p>
+</div>
+
+<div class="bg-white dark:bg-background-dark/50 p-6 rounded-xl shadow">
+<p class="opacity-60 text-sm">Found Items</p>
+<p class="text-3xl font-bold text-primary">00</p>
+</div>
+
+<div class="bg-white dark:bg-background-dark/50 p-6 rounded-xl shadow">
+<p class="opacity-60 text-sm">Recovered</p>
+<p class="text-3xl font-bold text-primary">00</p>
+</div>
+
+</div>
+
+<!-- ACTION CARDS -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+<a href="lost.html" class="bg-white dark:bg-background-dark/50 p-6 rounded-xl shadow flex justify-between items-center">
+<span class="font-semibold">Report Lost Item</span>
+<span class="material-symbols-outlined text-primary">search_off</span>
+</a>
+
+<a href="found.html" class="bg-white dark:bg-background-dark/50 p-6 rounded-xl shadow flex justify-between items-center">
+<span class="font-semibold">Report Found Item</span>
+<span class="material-symbols-outlined text-primary">inventory_2</span>
+</a>
+
+<a href="search.html" class="bg-white dark:bg-background-dark/50 p-6 rounded-xl shadow flex justify-between items-center">
+<span class="font-semibold">Search Items</span>
+<span class="material-symbols-outlined text-primary">manage_search</span>
+</a>
+
+<a href="status.html" class="bg-white dark:bg-background-dark/50 p-6 rounded-xl shadow flex justify-between items-center">
+<span class="font-semibold">Status Tracking</span>
+<span class="material-symbols-outlined text-primary">arrow_forward</span>
+</a>
+
+<a href="feedback.html" class="bg-white dark:bg-background-dark/50 p-6 rounded-xl shadow flex justify-between items-center">
+<span class="font-semibold">Feedback</span>
+<span class="material-symbols-outlined text-primary">feedback</span>
+</a>
+
+</div>
+
+</div>
+</div>
+</body>
+</html>
