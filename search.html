@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Search Items - Back2You</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+
+<script>
+tailwind.config = {
+ darkMode:"class",
+ theme:{
+  extend:{
+   colors:{
+    primary:"#13ec6d",
+    "background-light":"#f6f8f7",
+    "background-dark":"#102218"
+   },
+   fontFamily:{display:["Lexend"]}
+  }
+ }
+}
+</script>
+
+<style>
+body{font-family:'Lexend',sans-serif;}
+.activeChip{background:#13ec6d;color:#102218;}
+</style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display">
+
+<div class="min-h-screen p-8">
+
+<!-- HEADER -->
+<div class="flex items-center gap-3 mb-8">
+<span onclick="location.href='dashboard.html'"
+class="material-symbols-outlined cursor-pointer text-2xl text-primary">
+arrow_back_ios_new
+</span>
+<h1 class="text-2xl font-bold">Search Items</h1>
+</div>
+
+<!-- SEARCH BAR WITH ICON -->
+<div class="bg-white dark:bg-background-dark/50 p-6 rounded-xl shadow mb-6 relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 opacity-60">
+search
+</span>
+<input id="searchInput"
+type="text"
+placeholder="Search item name, case ID..."
+class="w-full pl-12 p-3 rounded-xl border outline-none focus:ring-2 focus:ring-primary"
+onkeyup="searchItems()">
+</div>
+
+<!-- CATEGORY CHIPS -->
+<div id="chips" class="flex flex-wrap gap-3 mb-8">
+
+<button onclick="filterCategory('All',this)" class="chip activeChip px-4 py-2 rounded-full border">All</button>
+<button onclick="filterCategory('Headphones',this)" class="chip px-4 py-2 rounded-full border">Headphones</button>
+<button onclick="filterCategory('Notebook',this)" class="chip px-4 py-2 rounded-full border">Notebook</button>
+<button onclick="filterCategory('Laptop',this)" class="chip px-4 py-2 rounded-full border">Laptop</button>
+<button onclick="filterCategory('Mobile',this)" class="chip px-4 py-2 rounded-full border">Mobile</button>
+<button onclick="filterCategory('Keys',this)" class="chip px-4 py-2 rounded-full border">Keys</button>
+
+</div>
+
+<!-- RESULTS -->
+<div id="results" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+
+</div>
+
+<script>
+// DATA
+const items = [
+ {name:"Dell Laptop", category:"Laptop", status:"Found"},
+ {name:"iPhone 13", category:"Mobile", status:"Lost"},
+ {name:"Sony Headphones", category:"Headphones", status:"Recovered"},
+ {name:"Math Notebook", category:"Notebook", status:"Found"},
+ {name:"Car Keys", category:"Keys", status:"Lost"},
+ {name:"HP Laptop", category:"Laptop", status:"Recovered"},
+];
+
+let currentCategory="All";
+
+function statusBadge(status){
+ if(status==="Lost") return "bg-red-100 text-red-600";
+ if(status==="Found") return "bg-yellow-100 text-yellow-600";
+ return "bg-green-100 text-green-600";
+}
+
+function displayItems(list){
+ const container=document.getElementById("results");
+ container.innerHTML="";
+
+ if(list.length===0){
+ container.innerHTML=`
+ <div class="col-span-full text-center opacity-60">
+ <span class="material-symbols-outlined text-5xl">search_off</span>
+ <p>No items found</p>
+ </div>`;
+ return;
+ }
+
+ list.forEach(item=>{
+ container.innerHTML+=`
+ <div class="bg-white dark:bg-background-dark/50 p-6 rounded-xl shadow hover:shadow-xl transition">
+
+ <div class="flex justify-between items-center mb-3">
+ <p class="font-semibold text-lg">${item.name}</p>
+ <span class="px-3 py-1 text-xs rounded-full ${statusBadge(item.status)}">
+ ${item.status}
+ </span>
+ </div>
+
+ <p class="opacity-60 text-sm mb-2">${item.category}</p>
+
+ <button class="text-primary text-sm font-semibold">
+ View Details →
+ </button>
+
+ </div>`;
+ });
+}
+
+function searchItems(){
+ const text=document.getElementById("searchInput").value.toLowerCase();
+ let filtered=items.filter(i=>i.name.toLowerCase().includes(text));
+
+ if(currentCategory!=="All"){
+ filtered=filtered.filter(i=>i.category===currentCategory);
+ }
+
+ displayItems(filtered);
+}
+
+function filterCategory(cat,btn){
+ currentCategory=cat;
+
+ document.querySelectorAll(".chip").forEach(c=>c.classList.remove("activeChip"));
+ btn.classList.add("activeChip");
+
+ searchItems();
+}
+
+displayItems(items);
+</script>
+
+</body>
+</html>

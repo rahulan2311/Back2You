@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Status Tracking - Why Not Project</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+
+<script>
+tailwind.config = {
+ darkMode:"class",
+ theme:{
+  extend:{
+   colors:{
+    primary:"#13ec6d",
+    "background-light":"#f6f8f7",
+    "background-dark":"#102218"
+   },
+   fontFamily:{display:["Lexend"]}
+  }
+ }
+}
+</script>
+
+<style>
+body{font-family:'Lexend',sans-serif;}
+</style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display">
+
+<div class="min-h-screen p-8">
+
+<!-- HEADER WITH BACK ICON -->
+<div class="flex items-center gap-3 mb-8">
+    <span onclick="location.href='dashboard.html'"
+
+        class="material-symbols-outlined cursor-pointer text-2xl text-primary">
+        arrow_back_ios_new
+    </span>
+  <h1 class="text-2xl font-bold">Status Tracking</h1>
+</div>
+
+<!-- CASE SUMMARY -->
+<div class="bg-white dark:bg-background-dark/50 rounded-xl shadow p-6 mb-8 grid md:grid-cols-3 gap-6">
+
+<div>
+<p class="opacity-60 text-sm">Case ID</p>
+<p class="font-bold text-lg text-primary">#LNF-2034</p>
+</div>
+
+<div>
+<p class="opacity-60 text-sm">Item</p>
+<p class="font-semibold">College ID Card</p>
+</div>
+
+<div>
+<p class="opacity-60 text-sm">Reported Date</p>
+<p class="font-semibold">10 Feb 2026</p>
+</div>
+
+</div>
+
+<!-- PROGRESS BAR -->
+<div class="bg-white dark:bg-background-dark/50 p-6 rounded-xl shadow mb-10">
+<p class="font-semibold mb-4">Overall Progress</p>
+<div class="w-full bg-gray-200 rounded-full h-3">
+<div class="bg-primary h-3 rounded-full w-3/4"></div>
+</div>
+<p class="text-sm opacity-60 mt-2">75% Completed</p>
+</div>
+
+<!-- TIMELINE -->
+<div class="bg-white dark:bg-background-dark/50 rounded-xl shadow p-6">
+
+<h2 class="font-semibold mb-6">Activity Timeline</h2>
+
+<div class="flex flex-col gap-8">
+
+<!-- STEP 1 -->
+<div class="flex items-start gap-4">
+<div class="bg-primary text-white w-10 h-10 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined">check</span>
+</div>
+<div>
+<p class="font-semibold">Item Reported</p>
+<p class="opacity-60 text-sm">Lost item form submitted</p>
+</div>
+</div>
+
+<!-- STEP 2 -->
+<div class="flex items-start gap-4">
+<div class="bg-primary text-white w-10 h-10 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined">inventory_2</span>
+</div>
+<div>
+<p class="font-semibold">Item Found</p>
+<p class="opacity-60 text-sm">Security logged matching item</p>
+</div>
+</div>
+
+<!-- STEP 3 -->
+<div class="flex items-start gap-4">
+<div class="bg-yellow-400 text-white w-10 h-10 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined">schedule</span>
+</div>
+<div>
+<p class="font-semibold">Awaiting Handover</p>
+<p class="opacity-60 text-sm">Collect item at office</p>
+</div>
+</div>
+
+<!-- STEP 4 -->
+<div class="flex items-start gap-4 opacity-40">
+<div class="bg-gray-300 text-white w-10 h-10 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined">done_all</span>
+</div>
+<div>
+<p class="font-semibold">Completed</p>
+<p class="text-sm">Pending</p>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+
+</body>
+</html>
