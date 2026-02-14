@@ -3,24 +3,153 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Dashboard</title>
+<title>Dashboard - Back2You</title>
+
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+
 <script>
-tailwind.config={darkMode:"class",theme:{extend:{colors:{primary:"#13ec6d","background-light":"#f6f8f7","background-dark":"#102218"},fontFamily:{display:["Lexend"]}}}}
+tailwind.config={
+ darkMode:"class",
+ theme:{
+  extend:{
+   colors:{primary:"#13ec6d","background-light":"#f6f8f7","background-dark":"#102218"},
+   fontFamily:{display:["Lexend"]}
+  }
+ }
+}
 </script>
+
+<style>body{font-family:'Lexend',sans-serif;}</style>
 </head>
 
-<body class="bg-background-light font-display">
-<div class="max-w-[430px] mx-auto min-h-screen px-6 pt-10 flex flex-col gap-4">
+<body class="bg-gradient-to-br from-green-50 to-green-100 dark:bg-background-dark font-display">
 
-<h2 class="text-2xl font-bold text-center mb-6">Dashboard</h2>
+<div class="flex min-h-screen">
 
-<a href="lost.html" class="bg-white shadow p-4 rounded-xl text-center">Report Lost Item</a>
+<!-- SIDEBAR -->
+<div class="w-64 bg-white dark:bg-background-dark/70 shadow-lg p-6 hidden md:block">
+<h3 class="text-xl font-bold mb-6 text-primary">Back2You</h3>
+<nav class="flex flex-col gap-4 text-sm">
+<a href="dashboard.html" class="font-semibold text-primary">Dashboard</a>
+<a href="index.html" class="text-red-500">Logout</a>
+</nav>
+</div>
 
-<a href="search.html" class="bg-white shadow p-4 rounded-xl text-center">Search Items</a>
-<a href="index.html" class="bg-red-500 text-white p-4 rounded-xl text-center">Logout</a>
+<!-- MAIN -->
+<div class="flex-1 p-8">
+
+<!-- TOP BAR -->
+<div class="flex justify-between items-center mb-6">
+
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-3xl">dashboard</span>
+<h1 class="text-2xl font-bold">Dashboard</h1>
+<p class="opacity-60">Welcome Back 👋</p>
+</div>
+
+<span class="material-symbols-outlined cursor-pointer text-2xl text-primary">
+notifications
+</span>
 
 </div>
+
+<!-- STATS -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+
+<div class="bg-white dark:bg-background-dark/50 p-6 rounded-xl shadow border-t-4 border-red-400 hover:shadow-[0_0_20px_rgba(255,0,0,0.2)]">
+<span class="material-symbols-outlined text-red-400 text-3xl mb-2">report</span>
+<p class="opacity-60 text-sm">Lost Items</p>
+<p class="text-3xl font-bold text-red-500">00</p>
+</div>
+
+<div class="bg-white dark:bg-background-dark/50 p-6 rounded-xl shadow border-t-4 border-yellow-400 hover:shadow-[0_0_20px_rgba(255,200,0,0.2)]">
+<span class="material-symbols-outlined text-yellow-400 text-3xl mb-2">inventory_2</span>
+<p class="opacity-60 text-sm">Found Items</p>
+<p class="text-3xl font-bold text-yellow-500">00</p>
+</div>
+
+<div class="bg-white dark:bg-background-dark/50 p-6 rounded-xl shadow border-t-4 border-primary hover:shadow-[0_0_20px_rgba(19,236,109,0.3)]">
+<span class="material-symbols-outlined text-primary text-3xl mb-2">check_circle</span>
+<p class="opacity-60 text-sm">Recovered</p>
+<p class="text-3xl font-bold text-primary">00</p>
+</div>
+
+</div>
+
+<!-- ACTION CARDS -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+
+<a href="found.html" class="bg-white hover:bg-green-50 dark:bg-background-dark/50 p-6 rounded-xl shadow hover:shadow-[0_0_20px_rgba(19,236,109,0.3)] flex justify-between items-center">
+<span class="font-semibold">Report Found Item</span>
+<span class="material-symbols-outlined text-primary">inventory_2</span>
+</a>
+
+<a href="search.html" class="bg-white hover:bg-green-50 dark:bg-background-dark/50 p-6 rounded-xl shadow hover:shadow-[0_0_20px_rgba(19,236,109,0.3)] flex justify-between items-center">
+<span class="font-semibold">Search Items</span>
+<span class="material-symbols-outlined text-primary">manage_search</span>
+</a>
+
+<a href="status.html" class="bg-white hover:bg-green-50 dark:bg-background-dark/50 p-6 rounded-xl shadow hover:shadow-[0_0_20px_rgba(19,236,109,0.3)] flex justify-between items-center">
+<span class="font-semibold">Status Tracking</span>
+<span class="material-symbols-outlined text-primary">arrow_forward</span>
+</a>
+
+<a href="lost.html" class="bg-white hover:bg-green-50 dark:bg-background-dark/50 p-6 rounded-xl shadow hover:shadow-[0_0_20px_rgba(19,236,109,0.3)] flex justify-between items-center">
+<span class="font-semibold">Report Lost Item</span>
+<span class="material-symbols-outlined text-primary">search_off</span>
+</a>
+
+<a href="feedback.html" class="bg-white hover:bg-green-50 dark:bg-background-dark/50 p-6 rounded-xl shadow hover:shadow-[0_0_20px_rgba(19,236,109,0.3)] flex justify-between items-center">
+<span class="font-semibold">Feedback</span>
+<span class="material-symbols-outlined text-primary">feedback</span>
+</a>
+
+</div>
+
+<!-- RECENT ACTIVITY -->
+<div class="bg-gradient-to-br from-white to-green-50 dark:bg-background-dark/50 rounded-xl shadow p-6">
+
+<h2 class="font-semibold text-lg mb-4 flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined">history</span>
+Recent Activity
+</h2>
+
+<div class="flex flex-col gap-4">
+
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary">inventory_2</span>
+<div>
+<p class="font-medium">Laptop Found in Library</p>
+<p class="text-xs opacity-60">2 minutes ago</p>
+</div>
+</div>
+
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary">check_circle</span>
+<div>
+<p class="font-medium">ID Card Returned</p>
+<p class="text-xs opacity-60">1 hour ago</p>
+</div>
+</div>
+
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary">report</span>
+<div>
+<p class="font-medium">Phone Reported Lost</p>
+<p class="text-xs opacity-60">Yesterday</p>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
 </body>
 </html>
+
+
