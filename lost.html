@@ -3,29 +3,79 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Report Lost</title>
-<script src="https://cdn.tailwindcss.com"></script>
+<title>Report Lost Item - Back2You</title>
+
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
 <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+
 <script>
-tailwind.config={darkMode:"class",theme:{extend:{colors:{primary:"#13ec6d","background-light":"#f6f8f7","background-dark":"#102218"},fontFamily:{display:["Lexend"]}}}}
+tailwind.config={
+ darkMode:"class",
+ theme:{
+  extend:{
+   colors:{primary:"#13ec6d","background-light":"#f6f8f7","background-dark":"#102218"},
+   fontFamily:{display:["Lexend"]}
+  }
+ }
+}
 </script>
+
+<style>body{font-family:'Lexend',sans-serif;}</style>
 </head>
 
-<body class="bg-background-light font-display">
-<div class="max-w-[430px] mx-auto min-h-screen px-6 pt-8 flex flex-col gap-3">
+<body class="bg-gradient-to-br from-green-50 to-green-100 font-display">
 
-<h2 class="text-xl font-bold mb-4">Report Lost Item</h2>
+<div class="min-h-screen p-8 max-w-3xl mx-auto">
 
-<input class="p-3 rounded-xl border" placeholder="Item Name">
-<input class="p-3 rounded-xl border" placeholder="Category">
-<input class="p-3 rounded-xl border" placeholder="Location">
-<input type="date" class="p-3 rounded-xl border">
-<input type="file" class="p-3 rounded-xl border">
+<!-- HEADER -->
+<div class="flex items-center gap-3 mb-8">
+<span onclick="location.href='dashboard.html'"
+class="material-symbols-outlined cursor-pointer text-2xl text-primary">
+arrow_back_ios_new
+</span>
+<h1 class="text-2xl font-bold">Report Lost Item</h1>
+</div>
 
-<button onclick="location.href='dashboard.html'" class="bg-primary py-3 rounded-full font-bold mt-3">
-Submit
+<!-- FORM CARD -->
+<div class="bg-white p-8 rounded-xl shadow border-t-4 border-red-400">
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+<div>
+<label class="text-sm opacity-70">Item Name</label>
+<input class="w-full mt-1 p-3 rounded-xl border focus:ring-2 focus:ring-primary">
+</div>
+
+<div>
+<label class="text-sm opacity-70">Category</label>
+<input class="w-full mt-1 p-3 rounded-xl border focus:ring-2 focus:ring-primary">
+</div>
+
+<div>
+<label class="text-sm opacity-70">Location Lost</label>
+<input class="w-full mt-1 p-3 rounded-xl border focus:ring-2 focus:ring-primary">
+</div>
+
+<div>
+<label class="text-sm opacity-70">Date Lost</label>
+<input type="date" class="w-full mt-1 p-3 rounded-xl border focus:ring-2 focus:ring-primary">
+</div>
+
+<div class="md:col-span-2">
+<label class="text-sm opacity-70">Upload Image</label>
+<input type="file" class="w-full mt-1 p-3 rounded-xl border">
+</div>
+
+</div>
+
+<button class="mt-8 w-full bg-red-500 text-white font-bold py-3 rounded-full hover:opacity-90 shadow-lg">
+Submit Lost Item
 </button>
+
+</div>
 
 </div>
 </body>
 </html>
+
