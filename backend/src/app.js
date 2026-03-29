@@ -33,17 +33,20 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 app.use("/uploads", express.static(path.join(__dirname, "..", "uploads")));
 
-app.get("/api/health", (req, res) => {
+function healthHandler(req, res) {
   res.status(200).json({
     success: true,
     message: "Back2You API is running"
   });
-});
+}
 
-app.use("/api/auth", authRoutes);
-app.use("/api/items", itemRoutes);
-app.use("/api/claims", claimRoutes);
-app.use("/api/feedback", feedbackRoutes);
+app.get("/api/health", healthHandler);
+app.get("/health", healthHandler);
+
+app.use(["/api/auth", "/auth"], authRoutes);
+app.use(["/api/items", "/items"], itemRoutes);
+app.use(["/api/claims", "/claims"], claimRoutes);
+app.use(["/api/feedback", "/feedback"], feedbackRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
