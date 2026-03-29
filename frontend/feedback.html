@@ -1,91 +1,80 @@
 <!DOCTYPE html>
-<html class="light" lang="en">
+<html lang="en">
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Feedback - Why Not Project</title>
-
+<title>Back2You | Feedback</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
-<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
-
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <script>
-tailwind.config = {
- darkMode:"class",
- theme:{
-  extend:{
-   colors:{
-    primary:"#13ec6d",
-    "background-light":"#f6f8f7",
-    "background-dark":"#102218"
-   },
-   fontFamily:{display:["Lexend"]}
-  }
- }
-}
+tailwind.config={theme:{extend:{colors:{deep:"#020617",text:"#f5f7fb",muted:"#8e97ab",blueglow:"#4f7cff",violetglow:"#8b3dff",cyanglow:"#33d2ff"},fontFamily:{sans:["Outfit","sans-serif"]},boxShadow:{panel:"0 30px 90px rgba(0,0,0,.55)",glow:"0 0 38px rgba(79,124,255,.22)"}}}}
 </script>
-
 <style>
-body{font-family:'Lexend',sans-serif;}
+  :root{color-scheme:dark}
+  body{font-family:"Outfit",sans-serif;background:radial-gradient(circle at 10% 8%,rgba(79,124,255,.28),transparent 24%),radial-gradient(circle at 82% 86%,rgba(139,61,255,.24),transparent 26%),radial-gradient(circle at 50% 52%,rgba(51,210,255,.1),transparent 28%),linear-gradient(180deg,#121742 0%,#15133b 38%,#171227 100%);overflow-x:hidden}
+  .glass{background:rgba(18,22,50,.7);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.08)}
+  .action-pill{position:relative;display:inline-flex;align-items:center;gap:.75rem;width:100%;padding:.38rem .38rem .38rem 1.35rem;border-radius:999px;transition:transform .25s ease,box-shadow .25s ease}
+  .action-pill:hover{transform:translateY(-2px);box-shadow:0 16px 34px rgba(79,124,255,.18)}
+  .action-pill__label{flex:1;text-align:center}
+  .action-pill__icon{display:inline-flex;height:3rem;width:3rem;align-items:center;justify-content:center;border-radius:999px;transition:transform .28s ease}
+  .action-pill:hover .action-pill__icon{transform:translateX(4px) scale(1.04)}
+  .back-pill{display:inline-flex;align-items:center;gap:.7rem;border-radius:999px;background:#343434;padding:.8rem 1.35rem;font-size:.95rem;font-weight:500;color:#fff;transition:transform .25s ease,background-color .25s ease,box-shadow .25s ease}
+  .back-pill:hover{transform:translateY(-2px);background:#3c3c3c;box-shadow:0 12px 28px rgba(0,0,0,.28)}
+  .back-pill__icon,.back-pill__label{transition:transform .25s ease}
+  .back-pill:hover .back-pill__icon,.back-pill:hover .back-pill__label{transform:translateX(-2px)}
+  @media (max-width:640px){.back-pill{padding:.68rem 1rem;font-size:.88rem}}
 </style>
 </head>
+<body class="min-h-screen text-text">
+<header class="border-b border-white/8 bg-[#13183f]/70 backdrop-blur-xl">
+  <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-5 lg:px-8">
+    <div class="flex items-center gap-4"><div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-blueglow to-violetglow text-white shadow-glow"><svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H7a2 2 0 00-2 2v9a1 1 0 001 1h9a2 2 0 002-2v-3m-1-8h3m0 0v3m0-3L10 14"/></svg></div><p class="text-2xl font-extrabold text-white">Back2You</p></div>
+    <div class="hidden items-center gap-6 md:flex"><a href="index.html" class="text-base font-semibold text-text/75 transition hover:text-white">Home</a><a href="dashboard.html" class="rounded-full bg-white px-5 py-2.5 text-base font-bold text-deep">Dashboard</a></div>
+  </div>
+</header>
+<main class="mx-auto max-w-5xl px-4 py-8 sm:px-5 lg:px-8">
+  <section class="grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
+    <div class="glass rounded-[1.75rem] p-6 shadow-panel sm:p-8"><p class="text-xs uppercase tracking-[0.3em] text-blueglow">Feedback</p><h1 class="mt-4 text-3xl font-extrabold text-white sm:text-4xl">Collect useful comments on the recovery experience.</h1><p class="mt-4 text-sm leading-7 text-text/65 sm:text-base">Ask whether reporting was simple, whether updates were clear, and whether the final pickup felt reliable.</p></div>
+    <form id="feedbackForm" class="glass rounded-[1.75rem] p-6 shadow-panel sm:p-8">
+      <div class="flex flex-col items-start gap-3 sm:flex-row sm:items-center">
+        <a href="dashboard.html" class="back-pill sm:shrink-0">
+          <span class="back-pill__icon text-[1.45rem] leading-none">&#8249;</span>
+          <span class="back-pill__label">Back</span>
+        </a>
+        <h2 class="text-2xl font-bold text-white sm:text-3xl">Feedback Form</h2>
+      </div>
+      <div class="mt-5"><p class="text-sm font-semibold text-white">Rate your experience</p><div class="mt-3 flex gap-3 text-3xl text-blueglow"><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span></div></div>
+      <div class="mt-6 space-y-4">
+        <input id="feedbackName" class="w-full rounded-2xl border-white/10 bg-white/8 px-4 py-3.5 text-white placeholder:text-muted focus:border-blueglow focus:ring-blueglow" placeholder="Your Name"/>
+        <textarea id="feedbackComment" rows="6" class="w-full rounded-[1.5rem] border-white/10 bg-white/8 px-4 py-3.5 text-white placeholder:text-muted focus:border-blueglow focus:ring-blueglow" placeholder="What worked well and what should change next?"></textarea>
+        <button type="submit" class="action-pill bg-gradient-to-r from-blueglow to-violetglow text-white shadow-glow"><span class="action-pill__label text-lg font-bold">Submit Feedback</span><span class="action-pill__icon bg-white text-deep"><svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.4"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6l6 6-6 6"/></svg></span></button>
+      </div>
+    </form>
+  </section>
+</main>
+<script src="js/app.js"></script>
+<script>
+document.getElementById("feedbackForm").addEventListener("submit", async (event) => {
+  event.preventDefault();
 
-<body class="bg-background-light dark:bg-background-dark font-display">
+  try {
+    await Back2YouAPI.request("/feedback", {
+      method: "POST",
+      body: JSON.stringify({
+        name: document.getElementById("feedbackName").value.trim(),
+        rating: 5,
+        comment: document.getElementById("feedbackComment").value.trim()
+      })
+    });
 
-<div class="min-h-screen px-12 py-10">
-
-<!-- HEADER -->
-<div class="flex items-center gap-3 mb-10">
-  <span onclick="location.href='dashboard.html'"
-        class="material-symbols-outlined cursor-pointer text-3xl text-primary">
-        arrow_back_ios_new
-  </span>
-  <h1 class="text-3xl font-bold">Feedback</h1>
-</div>
-
-<!-- CENTER WRAPPER -->
-<div class="flex justify-center">
-
-<!-- CARD -->
-<div class="bg-white dark:bg-background-dark/50 rounded-xl shadow-xl p-10 w-full max-w-3xl">
-
-<p class="opacity-60 mb-8 text-lg">
-We value your feedback. Help us improve the system experience.
-</p>
-
-<!-- RATING -->
-<div class="mb-8">
-<p class="font-semibold mb-3 text-lg">Rate Your Experience</p>
-<div class="flex gap-3 text-4xl text-primary cursor-pointer">
-<span class="material-symbols-outlined">star</span>
-<span class="material-symbols-outlined">star</span>
-<span class="material-symbols-outlined">star</span>
-<span class="material-symbols-outlined">star</span>
-<span class="material-symbols-outlined">star</span>
-</div>
-</div>
-
-<!-- FORM -->
-<div class="grid grid-cols-1 gap-6">
-
-<input class="p-4 rounded-xl border text-lg"
-       placeholder="Your Name (Optional)">
-
-<textarea rows="5"
-          class="p-4 rounded-xl border text-lg"
-          placeholder="Write your feedback here..."></textarea>
-
-<button class="bg-primary text-background-dark font-bold py-4 rounded-full text-lg hover:shadow-lg transition">
-Submit Feedback
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
+    event.currentTarget.reset();
+    alert("Feedback submitted successfully.");
+  } catch (error) {
+    alert(error.message);
+  }
+});
+</script>
 </body>
 </html>

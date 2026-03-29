@@ -1,25 +1,69 @@
 <!DOCTYPE html>
-<html class="light" lang="en">
+<html lang="en">
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Back2You</title>
+<title>Back2You | Home</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&display=swap" rel="stylesheet"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&display=swap" rel="stylesheet"/>
 <script>
-tailwind.config={darkMode:"class",theme:{extend:{colors:{primary:"#13ec6d","background-light":"#f6f8f7","background-dark":"#102218"},fontFamily:{display:["Lexend"]}}}}
+tailwind.config={theme:{extend:{colors:{deep:"#020617",text:"#f5f7fb",muted:"#8e97ab",blueglow:"#4f7cff",violetglow:"#8b3dff",cyanglow:"#33d2ff"},fontFamily:{sans:["Outfit","sans-serif"]},boxShadow:{panel:"0 30px 90px rgba(0,0,0,.55)",glow:"0 0 38px rgba(79,124,255,.22)"}}}}
 </script>
+<style>
+  :root{color-scheme:dark}
+  body{font-family:"Outfit",sans-serif;background:radial-gradient(circle at 10% 8%,rgba(79,124,255,.28),transparent 24%),radial-gradient(circle at 82% 86%,rgba(139,61,255,.24),transparent 26%),radial-gradient(circle at 50% 52%,rgba(51,210,255,.1),transparent 28%),linear-gradient(180deg,#121742 0%,#15133b 38%,#171227 100%);overflow-x:hidden}
+  .glass{background:rgba(18,22,50,.7);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.08)}
+  .headline-gradient{background:linear-gradient(90deg,#5d92ff 0%,#b07dff 55%,#33d2ff 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .action-pill{position:relative;display:inline-flex;align-items:center;gap:.75rem;width:100%;max-width:340px;padding:.38rem .38rem .38rem 1.35rem;border-radius:999px;transition:transform .25s ease,box-shadow .25s ease}
+  .action-pill:hover{transform:translateY(-2px);box-shadow:0 16px 34px rgba(79,124,255,.18)}
+  .action-pill__label{flex:1;text-align:center}
+  .action-pill__icon{display:inline-flex;height:3.2rem;width:3.2rem;align-items:center;justify-content:center;border-radius:999px;transition:transform .28s ease}
+  .action-pill:hover .action-pill__icon{transform:translateX(5px) scale(1.04)}
+</style>
 </head>
-
-<body class="bg-background-light font-display">
-<div class="max-w-[430px] mx-auto min-h-screen flex flex-col justify-center px-6">
-
-<h1 class="text-3xl font-bold text-center mb-4">Back2You</h1>
-<p class="text-center opacity-70 mb-8">Digital Lost & Found System</p>
-
-<a href="login.html" class="bg-primary text-center py-4 rounded-full font-bold">Get Started</a>
-
-</div>
+<body class="min-h-screen text-text">
+<header class="border-b border-white/8 bg-[#13183f]/70 backdrop-blur-xl">
+  <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-5 lg:px-8">
+    <div class="flex items-center gap-4">
+      <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#eff6ff] via-[#8ed8ff] to-[#4f7cff] text-white shadow-[0_0_38px_rgba(51,210,255,.35)]">
+        <svg class="h-8 w-8" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+          <text x="6" y="41" fill="#081225" font-family="Poppins, sans-serif" font-size="24" font-weight="800" letter-spacing="0.8">B2Y</text>
+        </svg>
+      </div>
+      <p class="text-2xl font-extrabold text-white sm:text-3xl">Back2You</p>
+    </div>
+    <div class="hidden items-center gap-6 md:flex">
+      <a href="index.html" class="text-base font-semibold text-text/75 transition hover:text-white">Home</a>
+      <a href="login.html" class="rounded-full bg-white px-6 py-3 text-base font-bold text-deep transition hover:bg-white/90">Sign In</a>
+    </div>
+  </div>
+</header>
+<main class="mx-auto flex min-h-[calc(100vh-81px)] max-w-7xl items-center px-4 py-10 sm:px-5 lg:px-8">
+  <section class="w-full">
+    <div class="mx-auto max-w-5xl text-center">
+      <h1 class="text-5xl font-extrabold leading-none text-white sm:text-6xl lg:text-7xl">Lost something?</h1>
+      <h2 class="headline-gradient mt-4 pb-2 text-5xl font-extrabold leading-[1.08] sm:text-6xl lg:text-7xl">We got you!</h2>
+      <p class="mx-auto mt-8 max-w-4xl text-xl leading-10 text-text/60 sm:text-2xl">The modern lost &amp; found system for college campuses. Report, search, and recover items with unprecedented ease.</p>
+      <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a href="login.html" class="action-pill bg-white text-deep">
+          <span class="action-pill__label text-lg font-bold sm:text-xl">Get Started</span>
+          <span class="action-pill__icon bg-deep text-white"><svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.4"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6l6 6-6 6"/></svg></span>
+        </a>
+        <a href="found.html" class="action-pill border border-white/10 bg-[#1a1d3c]/75 text-white">
+          <span class="action-pill__label text-lg font-bold sm:text-xl">I Found Something</span>
+          <span class="action-pill__icon bg-white text-deep"><svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.4"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6l6 6-6 6"/></svg></span>
+        </a>
+      </div>
+    </div>
+    <div class="mt-14 grid gap-5 md:grid-cols-3">
+      <div class="glass rounded-[1.75rem] p-6 text-center shadow-panel sm:p-8"><p class="text-4xl font-extrabold text-white sm:text-5xl">1,250</p><p class="mt-3 text-base text-text/60 sm:text-lg">Items Returned</p></div>
+      <div class="glass rounded-[1.75rem] p-6 text-center shadow-panel sm:p-8"><p class="text-4xl font-extrabold text-white sm:text-5xl">98</p><p class="mt-3 text-base text-text/60 sm:text-lg">% Success Rate</p></div>
+      <div class="glass rounded-[1.75rem] p-6 text-center shadow-panel sm:p-8"><p class="text-4xl font-extrabold text-white sm:text-5xl">24</p><p class="mt-3 text-base text-text/60 sm:text-lg">Hr Avg. Return</p></div>
+    </div>
+  </section>
+</main>
 </body>
 </html>
-

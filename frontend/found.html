@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Back2You | Report Lost Item</title>
+<title>Back2You | Report Found Item</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -100,28 +100,29 @@ tailwind.config = { theme: { extend: { colors: { deep:"#020617", text:"#f5f7fb",
     <a href="dashboard.html" class="rounded-full bg-white px-5 py-2.5 text-base font-bold text-deep">Dashboard</a>
   </div>
 </header>
-<main class="mx-auto max-w-5xl px-3 py-5 sm:px-5 sm:py-8 lg:px-8">
+<main class="mx-auto max-w-5xl px-4 py-8 sm:px-5 lg:px-8">
   <section>
-    <form id="lostReportForm" class="glass rounded-[1.5rem] p-4 shadow-panel sm:p-6 md:p-8">
+    <form id="foundReportForm" class="glass rounded-[1.75rem] p-6 shadow-panel sm:p-8">
       <div class="flex flex-col items-start gap-3 sm:flex-row sm:items-center">
         <a href="dashboard.html" class="back-pill sm:shrink-0">
           <span class="back-pill__icon text-[1.45rem] leading-none">&#8249;</span>
           <span class="back-pill__label">Back</span>
         </a>
-        <h2 class="text-xl font-bold text-white sm:text-3xl">Report Lost Item</h2>
+        <h2 class="text-2xl font-bold text-white sm:text-3xl">Report Found Item</h2>
       </div>
-      <div class="mt-5 grid gap-3 sm:mt-6 sm:gap-4 md:grid-cols-2">
-        <input id="lostItemName" class="rounded-2xl border-white/10 bg-white/8 px-4 py-3.5 text-white placeholder:text-muted focus:border-blueglow focus:ring-blueglow" placeholder="Item Name" required/>
-        <input id="lostCategory" class="rounded-2xl border-white/10 bg-white/8 px-4 py-3.5 text-white placeholder:text-muted focus:border-blueglow focus:ring-blueglow" placeholder="Category" required/>
-        <input id="lostLocation" class="rounded-2xl border-white/10 bg-white/8 px-4 py-3.5 text-white placeholder:text-muted focus:border-blueglow focus:ring-blueglow" placeholder="Location Lost" required/>
-        <input id="lostDate" type="date" class="rounded-2xl border-white/10 bg-white/8 px-4 py-3.5 text-white focus:border-blueglow focus:ring-blueglow" required/>
-        <textarea id="lostDescription" rows="5" class="md:col-span-2 rounded-[1.5rem] border-white/10 bg-white/8 px-4 py-3.5 text-white placeholder:text-muted focus:border-blueglow focus:ring-blueglow" placeholder="Description" required></textarea>
-        <input type="file" class="md:col-span-2 rounded-2xl border-white/10 bg-white/8 px-4 py-3.5 text-white file:mr-4 file:rounded-full file:border-0 file:bg-white file:px-4 file:py-2 file:text-sm file:font-bold file:text-deep"/>
+      <div class="mt-6 grid gap-4 md:grid-cols-2">
+        <input id="foundItemName" class="rounded-2xl border-white/10 bg-white/8 px-4 py-3.5 text-white placeholder:text-muted focus:border-violetglow focus:ring-violetglow" placeholder="Item Name" required/>
+        <input id="foundCategory" class="rounded-2xl border-white/10 bg-white/8 px-4 py-3.5 text-white placeholder:text-muted focus:border-violetglow focus:ring-violetglow" placeholder="Category" required/>
+        <input id="foundLocation" class="rounded-2xl border-white/10 bg-white/8 px-4 py-3.5 text-white placeholder:text-muted focus:border-violetglow focus:ring-violetglow" placeholder="Location Found" required/>
+        <input id="foundDate" type="date" class="rounded-2xl border-white/10 bg-white/8 px-4 py-3.5 text-white focus:border-violetglow focus:ring-violetglow" required/>
+        <input id="storedAt" class="md:col-span-2 rounded-2xl border-white/10 bg-white/8 px-4 py-3.5 text-white placeholder:text-muted focus:border-violetglow focus:ring-violetglow" placeholder="Stored At"/>
+        <textarea id="foundDescription" rows="5" class="md:col-span-2 rounded-[1.5rem] border-white/10 bg-white/8 px-4 py-3.5 text-white placeholder:text-muted focus:border-violetglow focus:ring-violetglow" placeholder="Description" required></textarea>
+        <input id="foundImage" type="file" class="md:col-span-2 rounded-2xl border-white/10 bg-white/8 px-4 py-3.5 text-white file:mr-4 file:rounded-full file:border-0 file:bg-white file:px-4 file:py-2 file:text-sm file:font-bold file:text-deep"/>
       </div>
-      <div id="trackingMessage" class="mt-5 hidden rounded-[1.25rem] border border-blueglow/25 bg-blueglow/10 px-4 py-3 text-sm text-white"></div>
-      <div class="mt-5 sm:mt-6">
-        <button type="submit" class="motion-btn motion-next w-full bg-gradient-to-r from-blueglow to-violetglow px-5 py-3.5 text-base font-bold text-white shadow-glow sm:px-6 sm:py-4 sm:text-lg">
-          <span class="motion-label">Submit Lost Item</span>
+      <div id="foundTrackingMessage" class="mt-5 hidden rounded-[1.25rem] border border-violetglow/25 bg-violetglow/10 px-4 py-3 text-sm text-white"></div>
+      <div class="mt-6">
+        <button type="submit" class="motion-btn motion-next w-full bg-gradient-to-r from-blueglow to-violetglow px-6 py-4 text-lg font-bold text-white shadow-glow">
+          <span class="motion-label">Submit Found Item</span>
           <span class="motion-icon text-xl">&#8250;</span>
         </button>
       </div>
@@ -132,29 +133,30 @@ tailwind.config = { theme: { extend: { colors: { deep:"#020617", text:"#f5f7fb",
 <script>
 Back2YouAPI.requireAuth();
 
-document.getElementById("lostReportForm").addEventListener("submit", async function (event) {
+document.getElementById("foundReportForm").addEventListener("submit", async function (event) {
   event.preventDefault();
 
   const formData = new FormData();
-  formData.append("itemName", document.getElementById("lostItemName").value.trim());
-  formData.append("category", document.getElementById("lostCategory").value.trim());
-  formData.append("eventLocation", document.getElementById("lostLocation").value.trim());
-  formData.append("eventDate", document.getElementById("lostDate").value);
-  formData.append("description", document.getElementById("lostDescription").value.trim());
+  formData.append("itemName", document.getElementById("foundItemName").value.trim());
+  formData.append("category", document.getElementById("foundCategory").value.trim());
+  formData.append("eventLocation", document.getElementById("foundLocation").value.trim());
+  formData.append("eventDate", document.getElementById("foundDate").value);
+  formData.append("storageLocation", document.getElementById("storedAt").value.trim());
+  formData.append("description", document.getElementById("foundDescription").value.trim());
 
-  const fileInput = document.querySelector('input[type="file"]');
+  const fileInput = document.getElementById("foundImage");
   if (fileInput.files[0]) {
     formData.append("image", fileInput.files[0]);
   }
 
   try {
-    const response = await Back2YouAPI.request("/items/lost", {
+    const response = await Back2YouAPI.request("/items/found", {
       method: "POST",
       body: formData
     });
 
-    const message = document.getElementById("trackingMessage");
-    message.textContent = `Tracking code generated: ${response.data.trackingCode}. Use this code in Status Tracking to check your item progress.`;
+    const message = document.getElementById("foundTrackingMessage");
+    message.textContent = `Found item saved with tracking code ${response.data.trackingCode}.`;
     message.classList.remove("hidden");
     this.reset();
   } catch (error) {

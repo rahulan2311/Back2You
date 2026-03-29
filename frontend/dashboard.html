@@ -1,114 +1,345 @@
 <!DOCTYPE html>
-<html class="light" lang="en">
+<html lang="en">
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Dashboard - Back2You</title>
-
+<title>Back2You | Dashboard</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
-
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <script>
-tailwind.config = {
- darkMode:"class",
- theme:{
-  extend:{
-   colors:{
-    primary:"#13ec6d",
-    "background-light":"#f6f8f7",
-    "background-dark":"#102218"
-   },
-   fontFamily:{display:["Lexend"]}
-  }
- }
-}
+tailwind.config={theme:{extend:{colors:{deep:"#020617",text:"#f5f7fb",soft:"#d9deea",blueglow:"#4f7cff",violetglow:"#7c4dff",cyanglow:"#33d2ff"},fontFamily:{sans:["Outfit","sans-serif"]},boxShadow:{panel:"0 24px 70px rgba(0,0,0,.45)",glow:"0 0 30px rgba(79,124,255,.30)"}}}}
 </script>
 
 <style>
-body{font-family:'Lexend',sans-serif;}
+  :root{color-scheme:dark}
+  body{font-family:"Outfit",sans-serif;background:radial-gradient(circle at 10% 8%,rgba(79,124,255,.28),transparent 24%),radial-gradient(circle at 82% 86%,rgba(139,61,255,.24),transparent 26%),radial-gradient(circle at 50% 52%,rgba(51,210,255,.1),transparent 28%),linear-gradient(180deg,#121742 0%,#15133b 38%,#171227 100%);overflow-x:hidden}
+  .glass{background:rgba(18,22,50,.7);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.08)}
+  .top-sheen{background:linear-gradient(90deg,rgba(79,124,255,0) 0%,rgba(79,124,255,.75) 50%,rgba(124,77,255,0) 100%);background-size:220% 100%;animation:lineRun 7s linear infinite}
+  .bg-grid::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.028) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.028) 1px,transparent 1px);background-size:56px 56px;mask-image:linear-gradient(180deg,rgba(0,0,0,.65),transparent 92%);pointer-events:none}
+  .action-pill{position:relative;display:inline-flex;align-items:center;gap:1.5rem;width:100%;max-width:250px;overflow:hidden;border-radius:999px;border:1px solid rgba(255,255,255,.2);padding:.35rem .35rem .35rem 1.2rem;color:#fff;transition:transform .3s ease,box-shadow .3s ease}
+  .action-pill::before{content:"";position:absolute;inset:0;width:0;background:linear-gradient(90deg,#6366f1 0%,#8b3dff 50%,#6366f1 100%);transition:width .5s ease-out}
+  .action-pill:hover{transform:translateY(-4px);box-shadow:0 10px 30px rgba(0,0,0,.4)}
+  .action-pill:hover::before{width:100%}
+  .action-pill__label{position:relative;z-index:1;flex:1;text-align:center}
+  .action-pill__icon{position:relative;z-index:1;display:inline-flex;height:3rem;width:3rem;align-items:center;justify-content:center;border-radius:999px;background:#fff;color:#000;transition:transform .3s ease}
+  .action-pill:hover .action-pill__icon{transform:translateX(-4px) scale(1.05)}
+  .panel-icon{display:inline-flex;height:3rem;width:3rem;align-items:center;justify-content:center;border-radius:1rem;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06)}
+  .metric-icon{display:inline-flex;height:2.75rem;width:2.75rem;align-items:center;justify-content:center;border-radius:.9rem;background:linear-gradient(135deg,rgba(79,124,255,.22),rgba(124,77,255,.22));color:#fff}
+  .back-pill{display:inline-flex;align-items:center;gap:.7rem;border-radius:999px;background:#343434;padding:.8rem 1.35rem;font-size:.95rem;font-weight:500;color:#fff;transition:transform .25s ease,background-color .25s ease,box-shadow .25s ease}
+  .back-pill:hover{transform:translateY(-2px);background:#3c3c3c;box-shadow:0 12px 28px rgba(0,0,0,.28)}
+  .back-pill__icon,.back-pill__label{transition:transform .25s ease}
+  .back-pill:hover .back-pill__icon,.back-pill:hover .back-pill__label{transform:translateX(-2px)}
+  @media (max-width: 640px){
+    .action-pill{max-width:none;padding:.32rem .32rem .32rem 1rem}
+    .action-pill__icon{height:2.7rem;width:2.7rem}
+    .back-pill{padding:.68rem 1rem;font-size:.88rem}
+  }
+  @keyframes lineRun{0%{background-position:200% 0}100%{background-position:-200% 0}}
 </style>
 </head>
+<body class="min-h-screen text-soft">
+<header class="sticky top-0 z-30 border-b border-white/8 bg-[#13183f]/70 backdrop-blur-xl">
+  <div class="absolute inset-x-0 top-0 h-px top-sheen"></div>
+  <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 lg:px-8">
+    <div class="flex items-center gap-3 sm:gap-4">
+      <div class="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-blueglow to-violetglow text-white shadow-glow sm:h-12 sm:w-12">
+        <svg class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H7a2 2 0 00-2 2v9a1 1 0 001 1h9a2 2 0 002-2v-3m-1-8h3m0 0v3m0-3L10 14"/>
+        </svg>
+      </div>
+      <p class="text-xl font-extrabold text-white sm:text-3xl">Back2You</p>
+    </div>
+    <div class="hidden items-center gap-6 md:flex">
+      <a href="index.html" class="text-base font-semibold text-soft/80 transition hover:text-white">Home</a>
+      <p id="userGreeting" class="text-base font-semibold text-white/85">Hi, User</p>
+    </div>
+  </div>
+</header>
 
-<body class="bg-background-light dark:bg-background-dark font-display">
+<main class="mx-auto max-w-7xl px-4 py-5 sm:px-5 sm:py-6 lg:px-8">
+  <section class="glass bg-grid relative overflow-hidden rounded-[1.75rem] p-5 shadow-panel sm:p-6 md:p-7">
+    <div class="absolute inset-x-0 top-0 h-px top-sheen"></div>
+    <div class="relative">
+      <div>
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.28em] text-blueglow sm:text-sm">Dashboard Overview</p>
+          <h1 class="mt-3 whitespace-nowrap text-2xl font-extrabold leading-tight text-white sm:text-4xl md:text-5xl">Helping every lost item find its way back to you.</h1>
+          <p class="mt-4 text-sm leading-7 text-soft/68 sm:text-base">Use these four actions to report items, search records, and track the recovery process with a clearer layout.</p>
+        </div>
+      </div>
 
-<div class="flex min-h-screen">
+      <div class="mt-6 grid gap-4 md:grid-cols-2">
+        <a href="lost.html" class="rounded-[1.4rem] border border-white/10 bg-white/5 p-4 transition duration-300 hover:-translate-y-1 hover:border-blueglow/30 hover:bg-white/[0.07] sm:p-5">
+          <div class="flex items-start justify-between gap-4">
+            <p class="text-xs uppercase tracking-[0.24em] text-blueglow">Primary</p>
+            <span class="panel-icon text-blueglow">
+              <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v8m4-4H8"/>
+              </svg>
+            </span>
+          </div>
+          <h2 class="mt-3 text-xl font-bold text-white sm:text-2xl">Report Lost Item</h2>
+          <p class="mt-3 text-sm leading-7 text-soft/65">Create a new lost item report with location, time, and identifying details.</p>
+          <span class="action-pill mt-5 max-w-[230px] bg-gradient-to-r from-blueglow to-violetglow text-white shadow-glow">
+            <span class="action-pill__label text-sm font-bold">Continue</span>
+            <span class="action-pill__icon bg-white text-deep">
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.4">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6l6 6-6 6"/>
+              </svg>
+            </span>
+          </span>
+        </a>
 
-<!-- SIDEBAR -->
-<div class="w-64 bg-white dark:bg-background-dark/70 shadow-lg p-6 hidden md:block">
+        <a href="found.html" class="rounded-[1.4rem] border border-white/10 bg-white/5 p-4 transition duration-300 hover:-translate-y-1 hover:border-violetglow/30 hover:bg-white/[0.07] sm:p-5">
+          <div class="flex items-start justify-between gap-4">
+            <p class="text-xs uppercase tracking-[0.24em] text-violetglow">Primary</p>
+            <span class="panel-icon text-violetglow">
+              <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+              </svg>
+            </span>
+          </div>
+          <h2 class="mt-3 text-xl font-bold text-white sm:text-2xl">Report Found Item</h2>
+          <p class="mt-3 text-sm leading-7 text-soft/65">Log a recovered item and move it into verification for the right owner.</p>
+          <span class="action-pill mt-5 max-w-[230px] bg-gradient-to-r from-blueglow to-violetglow text-white shadow-glow">
+            <span class="action-pill__label text-sm font-bold">Continue</span>
+            <span class="action-pill__icon bg-white text-deep">
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.4">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6l6 6-6 6"/>
+              </svg>
+            </span>
+          </span>
+        </a>
 
-<h2 class="text-xl font-bold mb-6">Back2You</h2>
+        <a href="search.html" class="rounded-[1.4rem] border border-white/10 bg-white/5 p-4 transition duration-300 hover:-translate-y-1 hover:border-blueglow/30 hover:bg-white/[0.07] sm:p-5">
+          <div class="flex items-start justify-between gap-4">
+            <p class="text-xs uppercase tracking-[0.24em] text-blueglow">Utility</p>
+            <span class="panel-icon text-blueglow">
+              <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m1.85-5.15a7 7 0 11-14 0 7 7 0 0114 0z"/>
+              </svg>
+            </span>
+          </div>
+          <h2 class="mt-3 text-xl font-bold text-white sm:text-2xl">Search Items</h2>
+          <p class="mt-3 text-sm leading-7 text-soft/65">Search by item name or case ID to review archived and active item reports quickly.</p>
+          <span class="action-pill mt-5 max-w-[230px] bg-gradient-to-r from-blueglow to-violetglow text-white shadow-glow">
+            <span class="action-pill__label text-sm font-bold">Open Search</span>
+            <span class="action-pill__icon bg-white text-deep">
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.4">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6l6 6-6 6"/>
+              </svg>
+            </span>
+          </span>
+        </a>
 
-<nav class="flex flex-col gap-4 text-sm">
+        <a href="status.html" class="rounded-[1.4rem] border border-white/10 bg-white/5 p-4 transition duration-300 hover:-translate-y-1 hover:border-violetglow/30 hover:bg-white/[0.07] sm:p-5">
+          <div class="flex items-start justify-between gap-4">
+            <p class="text-xs uppercase tracking-[0.24em] text-violetglow">Utility</p>
+            <span class="panel-icon text-violetglow">
+              <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 17l3 3 7-7M7 7h10"/>
+              </svg>
+            </span>
+          </div>
+          <h2 class="mt-3 text-xl font-bold text-white sm:text-2xl">Track Status</h2>
+          <p class="mt-3 text-sm leading-7 text-soft/65">Follow matching, verification, and final handover progress in one clear place.</p>
+          <span class="action-pill mt-5 max-w-[230px] bg-gradient-to-r from-blueglow to-violetglow text-white shadow-glow">
+            <span class="action-pill__label text-sm font-bold">Track Now</span>
+            <span class="action-pill__icon bg-white text-deep">
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.4">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6l6 6-6 6"/>
+              </svg>
+            </span>
+          </span>
+        </a>
+      </div>
 
-<a href="dashboard.html" class="font-semibold text-primary">Dashboard</a>
+      <div class="mt-6">
+        <div class="glass rounded-[1.45rem] p-5 shadow-panel sm:p-6">
+          <p class="text-xs uppercase tracking-[0.24em] text-soft/55">Feedback Box</p>
+          <h2 class="mt-2 text-xl font-bold text-white sm:text-2xl">Give feedback for a better experience</h2>
+          <p class="mt-3 max-w-2xl text-sm leading-7 text-soft/65">Tell us what worked well and what should improve. Click continue to open the feedback form.</p>
+          <button id="feedbackToggleButton" type="button" class="action-pill mt-5 max-w-[230px] bg-gradient-to-r from-blueglow to-violetglow text-white shadow-glow">
+            <span class="action-pill__label text-sm font-bold">Continue</span>
+            <span class="action-pill__icon bg-white text-deep">
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.4">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6l6 6-6 6"/>
+              </svg>
+            </span>
+          </button>
+          <div id="feedbackFormBox" class="mt-5 hidden rounded-[1.3rem] border border-white/10 bg-white/5 p-4 sm:p-5">
+            <p class="text-sm font-semibold text-white">Rate your experience</p>
+            <div class="mt-3 flex gap-3 text-3xl text-[#facc15]">
+              <span>&#9733;</span>
+              <span>&#9733;</span>
+              <span>&#9733;</span>
+              <span>&#9733;</span>
+              <span>&#9733;</span>
+            </div>
+            <textarea rows="4" class="mt-5 w-full rounded-[1.3rem] border border-white/10 bg-white/8 px-4 py-3.5 text-white placeholder:text-soft/45 focus:border-blueglow focus:ring-blueglow" placeholder="Share any improvement ideas or issues you noticed..."></textarea>
+            <button class="action-pill mt-5 max-w-[230px] bg-gradient-to-r from-blueglow to-violetglow text-white shadow-glow">
+              <span class="action-pill__label text-sm font-bold">Submit Feedback</span>
+              <span class="action-pill__icon bg-white text-deep">
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.4">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6l6 6-6 6"/>
+                </svg>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<a href="index.html" class="text-red-500">Logout</a>
+  <section class="mt-4">
+    <div class="glass rounded-[1.75rem] p-5 shadow-panel sm:p-6 md:p-7">
+      <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <p class="text-xs uppercase tracking-[0.3em] text-blueglow">Recent Activity</p>
+          <h2 class="mt-2 text-2xl font-bold text-white sm:text-3xl">Latest case movement</h2>
+        </div>
+        <a href="search.html" class="text-sm font-bold text-blueglow">Open archive</a>
+      </div>
+      <div class="space-y-4">
+        <article class="rounded-[1.4rem] border border-white/10 bg-white/5 p-4 sm:p-5">
+          <div class="flex gap-4">
+            <span class="panel-icon mt-1 h-11 w-11 shrink-0 rounded-xl text-blueglow">
+              <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M7 4h10v16H7z"/>
+              </svg>
+            </span>
+            <div>
+              <p class="text-xs uppercase tracking-[0.24em] text-soft/55">2 min ago</p>
+              <h3 class="mt-2 text-lg font-bold text-white sm:text-xl">MacBook Air, Silver moved to verification</h3>
+              <p class="mt-2 text-sm leading-6 text-soft/65">A strong claim was submitted and the case is now under manual ownership review.</p>
+            </div>
+          </div>
+        </article>
 
-</nav>
+        <article class="rounded-[1.4rem] border border-white/10 bg-white/5 p-4 sm:p-5">
+          <div class="flex gap-4">
+            <span class="panel-icon mt-1 h-11 w-11 shrink-0 rounded-xl text-violetglow">
+              <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6M7 4h10a2 2 0 012 2v12a2 2 0 01-2 2H7a2 2 0 01-2-2V6a2 2 0 012-2z"/>
+              </svg>
+            </span>
+            <div>
+              <p class="text-xs uppercase tracking-[0.24em] text-soft/55">18 min ago</p>
+              <h3 class="mt-2 text-lg font-bold text-white sm:text-xl">Student ID Card claim matched</h3>
+              <p class="mt-2 text-sm leading-6 text-soft/65">Security staff confirmed the ID details and the handover request is waiting for pickup.</p>
+            </div>
+          </div>
+        </article>
 
-</div>
+        <article class="rounded-[1.4rem] border border-white/10 bg-white/5 p-4 sm:p-5">
+          <div class="flex gap-4">
+            <span class="panel-icon mt-1 h-11 w-11 shrink-0 rounded-xl text-blueglow">
+              <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M7 8h10M7 12h10M9 16h6M5 5h14v14H5z"/>
+              </svg>
+            </span>
+            <div>
+              <p class="text-xs uppercase tracking-[0.24em] text-soft/55">1 hour ago</p>
+              <h3 class="mt-2 text-lg font-bold text-white sm:text-xl">Wireless Earbuds flagged for duplicate claims</h3>
+              <p class="mt-2 text-sm leading-6 text-soft/65">Two owners uploaded matching descriptions, so the case is being held for manual proof check.</p>
+            </div>
+          </div>
+        </article>
 
-<!-- MAIN CONTENT -->
-<div class="flex-1 p-8">
+        <article class="rounded-[1.4rem] border border-white/10 bg-white/5 p-4 sm:p-5">
+          <div class="flex gap-4">
+            <span class="panel-icon mt-1 h-11 w-11 shrink-0 rounded-xl text-violetglow">
+              <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+              </svg>
+            </span>
+            <div>
+              <p class="text-xs uppercase tracking-[0.24em] text-soft/55">Today</p>
+              <h3 class="mt-2 text-lg font-bold text-white sm:text-xl">43 items marked recovered this week</h3>
+              <p class="mt-2 text-sm leading-6 text-soft/65">Recovery rate improved after faster owner confirmation and more complete item descriptions.</p>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
 
-<!-- TOP BAR -->
-<div class="flex justify-between items-center mb-8">
-<h1 class="text-2xl font-bold">Dashboard</h1>
-<p class="opacity-60">Welcome Back 👋</p>
-</div>
+<script src="js/app.js"></script>
+<script>
+if (Back2YouAPI.requireAuth()) {
+  const currentUser = Back2YouAPI.getCurrentUser();
+  const userGreeting = document.getElementById("userGreeting");
+  if (currentUser?.name) {
+    userGreeting.textContent = `Hi, ${currentUser.name}`;
+  }
 
-<!-- STATS GRID -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+  const feedbackToggleButton = document.getElementById("feedbackToggleButton");
+  const feedbackFormBox = document.getElementById("feedbackFormBox");
+  const feedbackTextarea = feedbackFormBox.querySelector("textarea");
+  const feedbackSubmitButton = feedbackFormBox.querySelector("button");
+  const activityContainer = document.querySelector(".space-y-4");
 
-<div class="bg-white dark:bg-background-dark/50 p-6 rounded-xl shadow">
-<p class="opacity-60 text-sm">Lost Items</p>
-<p class="text-3xl font-bold text-primary">00</p>
-</div>
+  feedbackToggleButton.addEventListener("click", function () {
+    feedbackFormBox.classList.toggle("hidden");
+  });
 
-<div class="bg-white dark:bg-background-dark/50 p-6 rounded-xl shadow">
-<p class="opacity-60 text-sm">Found Items</p>
-<p class="text-3xl font-bold text-primary">00</p>
-</div>
+  feedbackSubmitButton.addEventListener("click", async function () {
+    const comment = feedbackTextarea.value.trim();
+    if (!comment) {
+      alert("Please enter feedback before submitting.");
+      return;
+    }
 
-<div class="bg-white dark:bg-background-dark/50 p-6 rounded-xl shadow">
-<p class="opacity-60 text-sm">Recovered</p>
-<p class="text-3xl font-bold text-primary">00</p>
-</div>
+    try {
+      await Back2YouAPI.request("/feedback", {
+        method: "POST",
+        body: JSON.stringify({
+          name: currentUser?.name || "Anonymous",
+          rating: 5,
+          comment
+        })
+      });
 
-</div>
+      feedbackTextarea.value = "";
+      feedbackFormBox.classList.add("hidden");
+      alert("Feedback submitted successfully.");
+    } catch (error) {
+      alert(error.message);
+    }
+  });
 
-<!-- ACTION CARDS -->
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+  Back2YouAPI.request("/items/dashboard/summary")
+    .then((response) => {
+      const { recentActivity } = response.data;
+      if (!recentActivity.length) {
+        activityContainer.innerHTML = '<article class="rounded-[1.4rem] border border-white/10 bg-white/5 p-4 sm:p-5"><p class="text-sm text-soft/65">No activity yet. Submit your first report to begin tracking cases.</p></article>';
+        return;
+      }
 
-<a href="lost.html" class="bg-white dark:bg-background-dark/50 p-6 rounded-xl shadow flex justify-between items-center">
-<span class="font-semibold">Report Lost Item</span>
-<span class="material-symbols-outlined text-primary">search_off</span>
-</a>
-
-<a href="found.html" class="bg-white dark:bg-background-dark/50 p-6 rounded-xl shadow flex justify-between items-center">
-<span class="font-semibold">Report Found Item</span>
-<span class="material-symbols-outlined text-primary">inventory_2</span>
-</a>
-
-<a href="search.html" class="bg-white dark:bg-background-dark/50 p-6 rounded-xl shadow flex justify-between items-center">
-<span class="font-semibold">Search Items</span>
-<span class="material-symbols-outlined text-primary">manage_search</span>
-</a>
-
-<a href="status.html" class="bg-white dark:bg-background-dark/50 p-6 rounded-xl shadow flex justify-between items-center">
-<span class="font-semibold">Status Tracking</span>
-<span class="material-symbols-outlined text-primary">arrow_forward</span>
-</a>
-
-<a href="feedback.html" class="bg-white dark:bg-background-dark/50 p-6 rounded-xl shadow flex justify-between items-center">
-<span class="font-semibold">Feedback</span>
-<span class="material-symbols-outlined text-primary">feedback</span>
-</a>
-
-</div>
-
-</div>
-</div>
+      activityContainer.innerHTML = recentActivity.map((item) => `
+        <article class="rounded-[1.4rem] border border-white/10 bg-white/5 p-4 sm:p-5">
+          <div class="flex gap-4">
+            <span class="panel-icon mt-1 h-11 w-11 shrink-0 rounded-xl ${item.reportType === "lost" ? "text-blueglow" : "text-violetglow"}">
+              <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+              </svg>
+            </span>
+            <div>
+              <p class="text-xs uppercase tracking-[0.24em] text-soft/55">${new Date(item.updatedAt).toLocaleString()}</p>
+              <h3 class="mt-2 text-lg font-bold text-white sm:text-xl">${item.itemName} is now ${item.status}</h3>
+              <p class="mt-2 text-sm leading-6 text-soft/65">${item.trackingCode} - ${item.reportType} report</p>
+            </div>
+          </div>
+        </article>
+      `).join("");
+    })
+    .catch((error) => {
+      activityContainer.innerHTML = `<article class="rounded-[1.4rem] border border-white/10 bg-white/5 p-4 sm:p-5"><p class="text-sm text-soft/65">${error.message}</p></article>`;
+    });
+}
+</script>
 </body>
 </html>
