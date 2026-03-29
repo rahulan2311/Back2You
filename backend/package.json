@@ -18,10 +18,10 @@
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
     "multer": "^2.1.1",
-    "mysql2": "^3.11.3"
+    "mysql2": "^3.11.3",
+    "serverless-http": "^4.0.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.7"
   }
 }
-
