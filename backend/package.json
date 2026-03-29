@@ -17,8 +17,8 @@
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
+    "mongoose": "^8.9.1",
     "multer": "^2.1.1",
-    "mysql2": "^3.11.3",
     "serverless-http": "^4.0.0"
   },
   "devDependencies": {

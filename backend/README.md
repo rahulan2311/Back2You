@@ -1,6 +1,6 @@
 # Back2You Backend
 
-This backend is a `Node.js + Express + MySQL` API for the Back2You lost-and-found project.
+This backend is a `Node.js + Express + MongoDB` API for the Back2You lost-and-found project.
 
 ## Features
 
@@ -12,8 +12,9 @@ This backend is a `Node.js + Express + MySQL` API for the Back2You lost-and-foun
 - Feedback submission
 - Dashboard summary endpoint
 - Optional image upload support through `multer`
+- Netlify Functions and Vercel-compatible serverless entry points
 
-## Run
+## Run Locally
 
 1. Create a `.env` file from `.env.example`
 2. Install packages:
@@ -22,8 +23,7 @@ This backend is a `Node.js + Express + MySQL` API for the Back2You lost-and-foun
 npm install
 ```
 
-3. Create the MySQL schema from `schema.sql`
-4. Start the API:
+3. Start the API:
 
 ```bash
 npm run dev
@@ -46,9 +46,6 @@ npm run dev
 - `POST /api/feedback`
 - `GET /api/feedback`
 
-## Suggested frontend integration
+## Production database
 
-- Replace `localStorage` registration/login with calls to `/api/auth/*`
-- Submit lost and found forms to `/api/items/lost` and `/api/items/found`
-- Query `status.html` using `/api/items/status/:trackingCode`
-- Query `search.html` using `/api/items/search?q=...`
+Use MongoDB Atlas or another hosted MongoDB provider and set `MONGO_URI` in production.

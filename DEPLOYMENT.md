@@ -2,33 +2,37 @@
 
 ## Recommended stack
 
-- Frontend: Vercel
-- Backend API: Railway
-- Database: Railway MySQL
+- Frontend + backend: Netlify
+- Database: MongoDB Atlas
 
-## Frontend
+## Netlify
 
-1. Deploy the `frontend/` folder as a static site.
-2. If the backend is on a different domain, load `frontend/js/config.example.js` before `frontend/js/app.js` and set `window.BACK2YOU_API_BASE_URL` to your backend URL.
-3. If you proxy `/api` to your backend on the same domain, no frontend API change is needed.
+1. Connect the GitHub repo to Netlify from the repository root.
+2. Netlify will use `netlify.toml`.
+3. Build command: `npm install --prefix backend`
+4. Publish directory: `frontend`
+5. Functions directory: `netlify/functions`
 
-## Backend
+## Required environment variables
 
-1. Deploy the `backend/` folder as a Node service.
-2. Set environment variables from `backend/.env.production.example`.
-3. Start command: `npm start`
-4. Build/install command: `npm install`
+- `NODE_ENV=production`
+- `MONGO_URI=your-mongodb-connection-string`
+- `JWT_SECRET=replace-with-a-long-random-secret`
+- `JWT_EXPIRES_IN=7d`
+- `CLIENT_URL=https://your-netlify-site.netlify.app`
+- `CLIENT_URLS=https://your-netlify-site.netlify.app`
 
-## Database
+## Frontend API
 
-1. Provision a MySQL database.
-2. Run `backend/schema.sql` against it.
-3. Copy the connection values into the backend environment.
+The frontend uses same-origin API calls through `frontend/js/config.js`:
+
+```js
+window.BACK2YOU_API_BASE_URL = "/api";
+```
 
 ## Pre-deploy checklist
 
-- `JWT_SECRET` is a long random value
-- `CLIENT_URL` and `CLIENT_URLS` match your frontend domain
-- Frontend points to the deployed backend URL
-- Database tables exist
+- MongoDB Atlas cluster is reachable from the internet
+- Netlify environment variables are set
+- Backend function `/api/health` returns success
 - Registration, login, lost item, search, and status flows are tested

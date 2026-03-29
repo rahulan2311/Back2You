@@ -1,31 +1,66 @@
-const { getPool } = require("../config/db");
-const normalizeDbRow = require("../utils/normalizeDbRow");
+const mongoose = require("mongoose");
 
-async function createClaim({ itemId, claimantId, proof }) {
-  const [result] = await getPool().query(
-    "INSERT INTO claims (item_id, claimant_id, proof) VALUES (?, ?, ?)",
-    [itemId, claimantId, proof]
-  );
+const claimSchema = new mongoose.Schema(
+  {
+    itemId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Item",
+      required: true
+    },
+    claimantId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true
+    },
+    proof: {
+      type: String,
+      required: true,
+      trim: true
+    },
+    status: {
+      type: String,
+      enum: ["pending", "approved", "rejected"],
+      default: "pending"
+    },
+    reviewedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User"
+    },
+    reviewNote: {
+      type: String,
+      trim: true
+    }
+  },
+  {
+    timestamps: true
+  }
+);
 
-  return findById(result.insertId);
+const ClaimModel = mongoose.models.Claim || mongoose.model("Claim", claimSchema);
+
+async function createClaim(claim) {
+  return ClaimModel.create(claim);
 }
 
 async function findById(id) {
-  const [rows] = await getPool().query("SELECT * FROM claims WHERE id = ? LIMIT 1", [id]);
-  return normalizeDbRow(rows[0]);
+  return ClaimModel.findById(id).lean();
 }
 
-async function updateClaim(id, { status, reviewNote, reviewedBy }) {
-  await getPool().query(
-    "UPDATE claims SET status = ?, review_note = ?, reviewed_by = ? WHERE id = ?",
-    [status, reviewNote || null, reviewedBy || null, id]
-  );
-
-  return findById(id);
+async function updateClaim(id, updates) {
+  return ClaimModel.findByIdAndUpdate(
+    id,
+    {
+      status: updates.status,
+      reviewNote: updates.reviewNote,
+      reviewedBy: updates.reviewedBy
+    },
+    { new: true }
+  ).lean();
 }
 
 module.exports = {
   createClaim,
   findById,
-  updateClaim
+  updateClaim,
+  ClaimModel
 };
