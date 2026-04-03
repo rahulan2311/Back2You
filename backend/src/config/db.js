@@ -6,7 +6,7 @@ async function connectDatabase() {
   const mongoUri = process.env.MONGO_URI;
 
   if (!mongoUri) {
-    throw new Error("MONGO_URI is required");
+    throw new Error("MONGO_URI is required. For local development, set MONGO_URI=mongodb://127.0.0.1:27017/back2you in backend/.env");
   }
 
   if (!connectPromise) {

@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="css/ambient-bg.css"/>
 <script>
 tailwind.config = { theme: { extend: { colors: { deep:"#020617", text:"#f5f7fb", muted:"#8e97ab", blueglow:"#4f7cff", violetglow:"#8b3dff", cyanglow:"#33d2ff" }, fontFamily:{ sans:["Outfit","sans-serif"] }, boxShadow:{ panel:"0 30px 90px rgba(0, 0, 0, 0.55)", glow:"0 0 38px rgba(79, 124, 255, 0.22)" } } } }
 </script>
@@ -15,88 +16,25 @@ tailwind.config = { theme: { extend: { colors: { deep:"#020617", text:"#f5f7fb",
   :root { color-scheme: dark; }
   body { font-family: "Outfit", sans-serif; background: radial-gradient(circle at 10% 8%, rgba(79, 124, 255, 0.28), transparent 24%), radial-gradient(circle at 82% 86%, rgba(139, 61, 255, 0.24), transparent 26%), radial-gradient(circle at 50% 52%, rgba(51, 210, 255, 0.1), transparent 28%), linear-gradient(180deg, #121742 0%, #15133b 38%, #171227 100%); overflow-x: hidden; }
   .glass { background: rgba(18,22,50,.7); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border: 1px solid rgba(255,255,255,.08); }
-  .fx-btn { position: relative; overflow: hidden; isolation: isolate; transition: transform .25s ease, box-shadow .25s ease, filter .25s ease; }
-  .fx-btn::before { content:""; position:absolute; inset:-120% 30%; background: linear-gradient(120deg, transparent 15%, rgba(255,255,255,.35) 50%, transparent 85%); transform: translateX(-140%) skewX(-18deg); transition: transform .7s ease; z-index:-1; }
-  .fx-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 34px rgba(79,124,255,.18); }
-  .fx-btn:hover::before { transform: translateX(140%) skewX(-18deg); }
-  .motion-btn {
-    position: relative;
-    overflow: hidden;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.85rem;
-    min-width: 220px;
-    border-radius: 999px;
-    transition: width .45s ease, transform .3s ease, box-shadow .3s ease, background-color .3s ease;
-  }
-  .motion-btn::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: rgba(255,255,255,.08);
-    opacity: .5;
-    transition: opacity .45s ease;
-  }
-  .motion-btn .motion-label,
-  .motion-btn .motion-icon {
-    position: relative;
-    z-index: 1;
-    transition: transform .45s ease;
-  }
-  .motion-btn:hover {
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 14px 34px rgba(79,124,255,.18);
-  }
-  .motion-btn:hover::before {
-    opacity: 1;
-  }
-  .motion-btn.motion-next:hover .motion-label,
-  .motion-btn.motion-next:hover .motion-icon {
-    transform: translateX(10px);
-  }
-  .motion-btn.motion-back:hover .motion-label,
-  .motion-btn.motion-back:hover .motion-icon {
-    transform: translateX(-10px);
-  }
-  .back-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.7rem;
-    border-radius: 999px;
-    background: #343434;
-    padding: 0.8rem 1.35rem;
-    font-size: 0.95rem;
-    font-weight: 500;
-    color: #fff;
-    transition: transform .25s ease, background-color .25s ease, box-shadow .25s ease;
-  }
-  .back-pill:hover {
-    transform: translateY(-2px);
-    background: #3c3c3c;
-    box-shadow: 0 12px 28px rgba(0,0,0,.28);
-  }
-  .back-pill__icon,
-  .back-pill__label {
-    transition: transform .25s ease;
-  }
-  .back-pill:hover .back-pill__icon,
-  .back-pill:hover .back-pill__label {
-    transform: translateX(-2px);
-  }
+  .motion-btn { position: relative; overflow: hidden; display: inline-flex; align-items: center; justify-content: center; gap: 0.85rem; min-width: 220px; border-radius: 999px; transition: width .45s ease, transform .3s ease, box-shadow .3s ease, background-color .3s ease; }
+  .motion-btn::before { content: ""; position: absolute; inset: 0; background: rgba(255,255,255,.08); opacity: .5; transition: opacity .45s ease; }
+  .motion-btn .motion-label, .motion-btn .motion-icon { position: relative; z-index: 1; transition: transform .45s ease; }
+  .motion-btn:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 14px 34px rgba(79,124,255,.18); }
+  .motion-btn:hover::before { opacity: 1; }
+  .motion-btn.motion-next:hover .motion-label, .motion-btn.motion-next:hover .motion-icon { transform: translateX(10px); }
+  .back-pill { display: inline-flex; height: 3rem; width: 3rem; align-items: center; justify-content: center; border-radius: 999px; border: 1px solid rgba(255,255,255,.09); background: rgba(5,8,20,.52); color: #fff; box-shadow: inset 0 1px 0 rgba(255,255,255,.06), 0 10px 26px rgba(0,0,0,.24); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); transition: transform .25s ease, border-color .25s ease, background-color .25s ease, box-shadow .25s ease; }
+  .back-pill:hover { transform: translateY(-2px); border-color: rgba(255,255,255,.18); background: rgba(8,12,28,.72); box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 14px 30px rgba(0,0,0,.32); }
+  .back-pill__icon { display: inline-flex; align-items: center; justify-content: center; transition: transform .25s ease; }
+  .back-pill:hover .back-pill__icon { transform: translateX(-2px); }
+  .back-pill__label { display: none; }
   .status-dot { display:inline-flex; height:1rem; width:1rem; border-radius:999px; }
   .status-red { background:#ef4444; box-shadow:0 0 18px rgba(239,68,68,.35); }
   .status-yellow { background:#facc15; box-shadow:0 0 18px rgba(250,204,21,.35); }
   .status-green { background:#22c55e; box-shadow:0 0 18px rgba(34,197,94,.35); }
-  @media (max-width: 640px) {
-    .back-pill {
-      padding: 0.68rem 1rem;
-      font-size: 0.88rem;
-    }
-  }
+  @media (max-width: 640px) { .back-pill { height: 2.75rem; width: 2.75rem; } }
 </style>
 </head>
-<body class="min-h-screen text-text">
+<body class="app-stripes min-h-screen text-text">
 <header class="border-b border-white/8 bg-[#13183f]/70 backdrop-blur-xl">
   <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-5 lg:px-8">
     <div class="flex items-center gap-4"><p class="text-2xl font-extrabold text-white">Back2You</p></div>
@@ -107,16 +45,13 @@ tailwind.config = { theme: { extend: { colors: { deep:"#020617", text:"#f5f7fb",
 <main class="mx-auto max-w-6xl px-4 py-8 sm:px-5 lg:px-8">
   <section class="glass rounded-[1.75rem] p-6 shadow-panel sm:p-8">
     <div class="flex flex-col items-start gap-3 sm:flex-row sm:items-center">
-      <a href="dashboard.html" class="back-pill sm:shrink-0">
-        <span class="back-pill__icon text-[1.45rem] leading-none">&#8249;</span>
-        <span class="back-pill__label">Back</span>
-      </a>
+      <a href="dashboard.html" class="back-pill sm:shrink-0" aria-label="Go back"><span class="back-pill__icon"><svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.4"><path stroke-linecap="round" stroke-linejoin="round" d="M15 18l-6-6 6-6"/></svg></span><span class="back-pill__label">Back</span></a>
       <h1 class="text-2xl font-extrabold text-white sm:text-4xl">Status Tracking</h1>
     </div>
-    <p class="mt-4 max-w-2xl text-sm leading-7 text-muted sm:text-base">Enter the tracking number generated when you submitted a lost item report. The system will show the current status in red, yellow, or green.</p>
+    <p class="mt-4 max-w-2xl text-sm leading-7 text-muted sm:text-base">Enter the tracking number generated when you submitted a lost item report. The system will show the current status and any matched item it has found.</p>
 
     <div class="mt-6 grid gap-4 lg:grid-cols-[1fr_auto]">
-      <input id="trackingCodeInput" type="text" placeholder="Enter tracking code like LNF-4821" class="rounded-2xl border-white/10 bg-white/8 px-4 py-3.5 text-white placeholder:text-muted focus:border-blueglow focus:ring-blueglow"/>
+      <input id="trackingCodeInput" type="text" placeholder="Enter tracking code like LNF-20260331-142818-5894" class="rounded-2xl border-white/10 bg-white/8 px-4 py-3.5 text-white placeholder:text-muted focus:border-blueglow focus:ring-blueglow"/>
       <button id="checkStatusButton" class="motion-btn motion-next w-full bg-gradient-to-r from-blueglow to-violetglow px-6 py-3.5 text-base font-bold text-white shadow-glow lg:w-auto">
         <span class="motion-label">Check Status</span>
         <span class="motion-icon text-xl">&#8250;</span>
@@ -126,7 +61,7 @@ tailwind.config = { theme: { extend: { colors: { deep:"#020617", text:"#f5f7fb",
     <div class="mt-6 grid gap-3 sm:grid-cols-3">
       <div class="rounded-[1.2rem] border border-red-400/20 bg-red-500/10 p-4 text-sm text-white"><span class="status-dot status-red mr-3 align-middle"></span>Reported</div>
       <div class="rounded-[1.2rem] border border-yellow-300/20 bg-yellow-400/10 p-4 text-sm text-white"><span class="status-dot status-yellow mr-3 align-middle"></span>Still Searching</div>
-      <div class="rounded-[1.2rem] border border-green-400/20 bg-green-500/10 p-4 text-sm text-white"><span class="status-dot status-green mr-3 align-middle"></span>Found</div>
+      <div class="rounded-[1.2rem] border border-green-400/20 bg-green-500/10 p-4 text-sm text-white"><span class="status-dot status-green mr-3 align-middle"></span>Found / Matched</div>
     </div>
 
     <div id="statusResult" class="mt-6 hidden rounded-[1.5rem] border border-white/10 bg-white/5 p-5 sm:p-6">
@@ -139,11 +74,13 @@ tailwind.config = { theme: { extend: { colors: { deep:"#020617", text:"#f5f7fb",
         <div class="rounded-[1.2rem] border border-white/10 bg-white/5 p-4"><p class="text-sm text-muted">Item Name</p><p id="resultItem" class="mt-2 text-xl font-bold text-white"></p></div>
         <div class="rounded-[1.2rem] border border-white/10 bg-white/5 p-4"><p class="text-sm text-muted">Reported Date</p><p id="resultDate" class="mt-2 text-xl font-bold text-white"></p></div>
         <div class="rounded-[1.2rem] border border-white/10 bg-white/5 p-4"><p class="text-sm text-muted">Location</p><p id="resultLocation" class="mt-2 text-xl font-bold text-white"></p></div>
+        <div class="rounded-[1.2rem] border border-white/10 bg-white/5 p-4 sm:col-span-2"><p class="text-sm text-muted">Matched Item</p><p id="matchedItemCode" class="mt-2 text-xl font-bold text-white">No match yet</p></div>
       </div>
       <p id="resultMessage" class="mt-5 text-sm leading-7 text-muted"></p>
     </div>
   </section>
 </main>
+<script src="js/config.js"></script>
 <script src="js/app.js"></script>
 <script>
 const statusConfig = {
@@ -160,7 +97,17 @@ const statusConfig = {
   "found": {
     label: "Found",
     indicator: "status-green",
-    message: "A match has been found for this item. Please wait for final verification or pickup instructions."
+    message: "A matching report has been found for this item. Please review the matched code and wait for final verification or pickup instructions."
+  },
+  "claimed": {
+    label: "Claimed",
+    indicator: "status-green",
+    message: "An ownership claim is in progress for this matched item."
+  },
+  "returned": {
+    label: "Returned",
+    indicator: "status-green",
+    message: "This item has been returned successfully."
   }
 };
 
@@ -183,7 +130,10 @@ document.getElementById("checkStatusButton").addEventListener("click", async fun
     document.getElementById("resultItem").textContent = result.itemName || "Lost Item";
     document.getElementById("resultDate").textContent = result.eventDate ? new Date(result.eventDate).toLocaleDateString() : "-";
     document.getElementById("resultLocation").textContent = result.eventLocation || "-";
-    document.getElementById("resultMessage").textContent = config.message;
+    document.getElementById("matchedItemCode").textContent = result.matchedItem?.trackingCode || "No match yet";
+    document.getElementById("resultMessage").textContent = result.matchedItem
+      ? `${config.message} Matched with ${result.matchedItem.trackingCode} (${result.matchedItem.itemName}).`
+      : config.message;
   } catch (error) {
     indicator.classList.add("status-red");
     document.getElementById("statusLabel").textContent = "Tracking code not found";
@@ -191,6 +141,7 @@ document.getElementById("checkStatusButton").addEventListener("click", async fun
     document.getElementById("resultItem").textContent = "-";
     document.getElementById("resultDate").textContent = "-";
     document.getElementById("resultLocation").textContent = "-";
+    document.getElementById("matchedItemCode").textContent = "No match yet";
     document.getElementById("resultMessage").textContent = error.message || "No report matches this code. Check the number and try again.";
   }
 });
@@ -204,4 +155,3 @@ if (codeFromQuery) {
 </script>
 </body>
 </html>
-

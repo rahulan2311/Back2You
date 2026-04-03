@@ -40,15 +40,30 @@
       headers.Authorization = `Bearer ${token}`;
     }
 
-    const response = await fetch(`${API_BASE_URL}${path}`, {
-      ...options,
-      headers
-    });
+    let response;
 
-    const data = await response.json().catch(() => ({}));
+    try {
+      response = await fetch(`${API_BASE_URL}${path}`, {
+        ...options,
+        headers
+      });
+    } catch (error) {
+      throw new Error(`Unable to reach the server at ${API_BASE_URL}. Check the API deployment and try again.`);
+    }
+
+    const rawBody = await response.text();
+    let data = {};
+
+    if (rawBody) {
+      try {
+        data = JSON.parse(rawBody);
+      } catch (error) {
+        data = { message: rawBody };
+      }
+    }
 
     if (!response.ok) {
-      throw new Error(data.message || "Request failed");
+      throw new Error(data.message || `Request failed with status ${response.status}`);
     }
 
     return data;

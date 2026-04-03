@@ -3,17 +3,19 @@ const asyncHandler = require("../utils/asyncHandler");
 
 const createFeedback = asyncHandler(async (req, res) => {
   const { name, rating, comment } = req.body;
+  const normalizedRating = Number(rating);
+  const normalizedComment = String(comment || "").trim();
 
-  if (!rating || !comment) {
+  if (!Number.isInteger(normalizedRating) || normalizedRating < 1 || normalizedRating > 5 || !normalizedComment) {
     res.status(400);
-    throw new Error("Rating and comment are required");
+    throw new Error("Rating must be between 1 and 5, and comment is required");
   }
 
   const feedback = await Feedback.createFeedback({
     userId: req.user ? req.user._id : null,
     name: name || req.user?.name || "Anonymous",
-    rating,
-    comment
+    rating: normalizedRating,
+    comment: normalizedComment
   });
 
   res.status(201).json({

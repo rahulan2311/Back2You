@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="css/ambient-bg.css"/>
 <script>
 tailwind.config = { theme: { extend: { colors: { deep:"#020617", text:"#f5f7fb", muted:"#8e97ab", blueglow:"#4f7cff", violetglow:"#8b3dff", cyanglow:"#33d2ff" }, fontFamily:{ sans:["Outfit","sans-serif"] }, boxShadow:{ panel:"0 30px 90px rgba(0, 0, 0, 0.55)", glow:"0 0 38px rgba(79, 124, 255, 0.22)" } } } }
 </script>
@@ -15,6 +16,30 @@ tailwind.config = { theme: { extend: { colors: { deep:"#020617", text:"#f5f7fb",
   :root { color-scheme: dark; }
   body { font-family: "Outfit", sans-serif; background: radial-gradient(circle at 10% 8%, rgba(79, 124, 255, 0.28), transparent 24%), radial-gradient(circle at 82% 86%, rgba(139, 61, 255, 0.24), transparent 26%), radial-gradient(circle at 50% 52%, rgba(51, 210, 255, 0.1), transparent 28%), linear-gradient(180deg, #121742 0%, #15133b 38%, #171227 100%); overflow-x: hidden; }
   .glass { background: rgba(18,22,50,.7); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border: 1px solid rgba(255,255,255,.08); }
+  .form-shell { width: 100%; max-width: 44rem; margin-inline: auto; }
+  .report-grid { display: grid; gap: .85rem; }
+  .report-input { min-height: 3.4rem; width: 100%; font-size: 1rem; color: #111827 !important; background: rgba(255,255,255,.96) !important; -webkit-text-fill-color: #111827; }
+  .report-input::placeholder { color: #94a3b8 !important; }
+  .report-input[type="date"] { color-scheme: dark; cursor: pointer; color: #111827 !important; }
+  .report-input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1) brightness(1.15); cursor: pointer; }
+  .report-input:focus,
+  .report-input:active,
+  .report-input[type="date"]:focus,
+  .report-input[type="date"]:active,
+  .report-textarea:focus,
+  .report-textarea:active {
+    color: #111827 !important;
+    background: rgba(255,255,255,.96) !important;
+    -webkit-text-fill-color: #111827;
+  }
+  .report-textarea { min-height: 8.5rem; width: 100%; font-size: 1rem; resize: vertical; color: #111827 !important; background: rgba(255,255,255,.96) !important; -webkit-text-fill-color: #111827; }
+  .report-textarea::placeholder { color: #94a3b8 !important; }
+  .report-file { width: 100%; overflow: hidden; }
+  .report-feedback { word-break: break-word; }
+  .tracking-code-box { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:.85rem; border:1px solid rgba(79,124,255,.22); background:rgba(255,255,255,.05); border-radius:1rem; padding:.9rem 1rem; margin-top:.8rem; }
+  .tracking-code-value { font-size:1rem; font-weight:800; letter-spacing:.12em; color:#ffffff; }
+  .tracking-copy-btn { border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.08); color:#fff; border-radius:999px; padding:.6rem 1rem; font-size:.85rem; font-weight:700; transition:transform .2s ease,background-color .2s ease,border-color .2s ease; }
+  .tracking-copy-btn:hover { transform:translateY(-1px); background:rgba(255,255,255,.12); border-color:rgba(255,255,255,.2); }
   .fx-btn { position: relative; overflow: hidden; isolation: isolate; transition: transform .25s ease, box-shadow .25s ease, filter .25s ease; }
   .fx-btn::before { content:""; position:absolute; inset:-120% 30%; background: linear-gradient(120deg, transparent 15%, rgba(255,255,255,.35) 50%, transparent 85%); transform: translateX(-140%) skewX(-18deg); transition: transform .7s ease; z-index:-1; }
   .fx-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 34px rgba(79,124,255,.18); }
@@ -61,66 +86,111 @@ tailwind.config = { theme: { extend: { colors: { deep:"#020617", text:"#f5f7fb",
   }
   .back-pill {
     display: inline-flex;
+    height: 3rem;
+    width: 3rem;
     align-items: center;
-    gap: 0.7rem;
+    justify-content: center;
     border-radius: 999px;
-    background: #343434;
-    padding: 0.8rem 1.35rem;
-    font-size: 0.95rem;
-    font-weight: 500;
+    border: 1px solid rgba(255,255,255,.09);
+    background: rgba(5,8,20,.52);
     color: #fff;
-    transition: transform .25s ease, background-color .25s ease, box-shadow .25s ease;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.06), 0 10px 26px rgba(0,0,0,.24);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    transition: transform .25s ease, border-color .25s ease, background-color .25s ease, box-shadow .25s ease;
   }
   .back-pill:hover {
     transform: translateY(-2px);
-    background: #3c3c3c;
-    box-shadow: 0 12px 28px rgba(0,0,0,.28);
+    border-color: rgba(255,255,255,.18);
+    background: rgba(8,12,28,.72);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 14px 30px rgba(0,0,0,.32);
   }
-  .back-pill__icon,
-  .back-pill__label {
+  .back-pill__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     transition: transform .25s ease;
   }
-  .back-pill:hover .back-pill__icon,
-  .back-pill:hover .back-pill__label {
+  .back-pill:hover .back-pill__icon {
     transform: translateX(-2px);
+  }
+  .back-pill__label {
+    display: none;
   }
   @media (max-width: 640px) {
     .back-pill {
-      padding: 0.68rem 1rem;
-      font-size: 0.88rem;
+      height: 2.75rem;
+      width: 2.75rem;
+    }
+    .mobile-dashboard-link {
+      display: none;
+    }
+    .report-shell {
+      padding-inline: .875rem;
+      padding-top: 1rem;
+      padding-bottom: 1.25rem;
+    }
+    .report-card {
+      border-radius: 1.35rem;
+      padding: 1rem;
+    }
+    .report-grid {
+      gap: .75rem;
+      margin-top: 1rem;
+    }
+    .report-title {
+      font-size: 1.5rem;
+      line-height: 1.15;
+    }
+    .report-input,
+    .report-textarea,
+    .report-file {
+      border-radius: 1rem;
+    }
+    .report-file {
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+      font-size: .95rem;
+    }
+    .submit-row {
+      margin-top: 1rem;
+    }
+    .submit-button {
+      min-width: 100%;
+      padding-top: .95rem;
+      padding-bottom: .95rem;
+      font-size: 1rem;
     }
   }
 </style>
 </head>
-<body class="min-h-screen text-text">
+<body class="app-stripes min-h-screen text-text">
 <header class="border-b border-white/8 bg-[#13183f]/70 backdrop-blur-xl">
   <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-5 lg:px-8">
     <div class="flex items-center gap-4"><p class="text-2xl font-extrabold text-white">Back2You</p></div>
     <nav class="hidden items-center gap-8 text-base font-semibold text-text/75 md:flex"><a href="index.html" class="hover:text-white">Home</a><a href="search.html" class="hover:text-white">Search Items</a><a href="dashboard.html" class="hover:text-white">Dashboard</a></nav>
-    <a href="dashboard.html" class="rounded-full bg-white px-5 py-2.5 text-base font-bold text-deep">Dashboard</a>
+    <a href="dashboard.html" class="mobile-dashboard-link rounded-full bg-white px-5 py-2.5 text-base font-bold text-deep">Dashboard</a>
   </div>
 </header>
-<main class="mx-auto max-w-5xl px-3 py-5 sm:px-5 sm:py-8 lg:px-8">
+<main class="report-shell mx-auto max-w-5xl px-3 py-5 sm:px-5 sm:py-8 lg:px-8">
   <section>
-    <form id="lostReportForm" class="glass rounded-[1.5rem] p-4 shadow-panel sm:p-6 md:p-8">
+    <form id="lostReportForm" class="report-card form-shell glass rounded-[1.5rem] p-4 shadow-panel sm:p-6 md:p-8">
       <div class="flex flex-col items-start gap-3 sm:flex-row sm:items-center">
-        <a href="dashboard.html" class="back-pill sm:shrink-0">
-          <span class="back-pill__icon text-[1.45rem] leading-none">&#8249;</span>
-          <span class="back-pill__label">Back</span>
-        </a>
-        <h2 class="text-xl font-bold text-white sm:text-3xl">Report Lost Item</h2>
+        <a href="dashboard.html" class="back-pill sm:shrink-0" aria-label="Go back"><span class="back-pill__icon"><svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.4"><path stroke-linecap="round" stroke-linejoin="round" d="M15 18l-6-6 6-6"/></svg></span><span class="back-pill__label">Back</span></a>
+        <h2 class="report-title text-xl font-bold text-white sm:text-3xl">Report Lost Item</h2>
       </div>
-      <div class="mt-5 grid gap-3 sm:mt-6 sm:gap-4 md:grid-cols-2">
-        <input id="lostItemName" class="rounded-2xl border-white/10 bg-white/8 px-4 py-3.5 text-white placeholder:text-muted focus:border-blueglow focus:ring-blueglow" placeholder="Item Name" required/>
-        <input id="lostCategory" class="rounded-2xl border-white/10 bg-white/8 px-4 py-3.5 text-white placeholder:text-muted focus:border-blueglow focus:ring-blueglow" placeholder="Category" required/>
-        <input id="lostLocation" class="rounded-2xl border-white/10 bg-white/8 px-4 py-3.5 text-white placeholder:text-muted focus:border-blueglow focus:ring-blueglow" placeholder="Location Lost" required/>
-        <input id="lostDate" type="date" class="rounded-2xl border-white/10 bg-white/8 px-4 py-3.5 text-white focus:border-blueglow focus:ring-blueglow" required/>
-        <textarea id="lostDescription" rows="5" class="md:col-span-2 rounded-[1.5rem] border-white/10 bg-white/8 px-4 py-3.5 text-white placeholder:text-muted focus:border-blueglow focus:ring-blueglow" placeholder="Description" required></textarea>
-        <input type="file" class="md:col-span-2 rounded-2xl border-white/10 bg-white/8 px-4 py-3.5 text-white file:mr-4 file:rounded-full file:border-0 file:bg-white file:px-4 file:py-2 file:text-sm file:font-bold file:text-deep"/>
+      <div class="report-grid mt-5 sm:mt-6 md:grid-cols-2">
+        <input id="lostItemName" class="report-input rounded-2xl border-white/10 bg-white/8 px-4 py-3.5 text-white placeholder:text-muted focus:border-blueglow focus:ring-blueglow" placeholder="Item Name" required/>
+        <input id="lostCategory" class="report-input rounded-2xl border-white/10 bg-white/8 px-4 py-3.5 text-white placeholder:text-muted focus:border-blueglow focus:ring-blueglow" placeholder="Category" required/>
+        <input id="lostLocation" class="report-input rounded-2xl border-white/10 bg-white/8 px-4 py-3.5 text-white placeholder:text-muted focus:border-blueglow focus:ring-blueglow" placeholder="Location Lost" required/>
+        <input id="lostDate" type="date" onclick="this.showPicker && this.showPicker()" class="report-input rounded-2xl border-white/10 bg-white/8 px-4 py-3.5 text-white focus:border-blueglow focus:ring-blueglow" required/>
+        <input id="lostPhoneNumber" type="tel" inputmode="tel" class="report-input md:col-span-2 rounded-2xl border-white/10 bg-white/8 px-4 py-3.5 text-white placeholder:text-muted focus:border-blueglow focus:ring-blueglow" placeholder="Phone Number" required/>
+        <textarea id="lostDescription" rows="5" class="report-textarea md:col-span-2 rounded-[1.5rem] border-white/10 bg-white/8 px-4 py-3.5 text-white placeholder:text-muted focus:border-blueglow focus:ring-blueglow" placeholder="Description" required></textarea>
+        <input type="file" class="report-file md:col-span-2 rounded-2xl border-white/10 bg-white/8 px-4 py-3.5 text-white file:mr-4 file:rounded-full file:border-0 file:bg-white file:px-4 file:py-2 file:text-sm file:font-bold file:text-deep"/>
       </div>
-      <div id="trackingMessage" class="mt-5 hidden rounded-[1.25rem] border border-blueglow/25 bg-blueglow/10 px-4 py-3 text-sm text-white"></div>
-      <div class="mt-5 sm:mt-6">
-        <button type="submit" class="motion-btn motion-next w-full bg-gradient-to-r from-blueglow to-violetglow px-5 py-3.5 text-base font-bold text-white shadow-glow sm:px-6 sm:py-4 sm:text-lg">
+      <div id="trackingMessage" class="report-feedback mt-5 hidden rounded-[1.25rem] border border-blueglow/25 bg-blueglow/10 px-4 py-3 text-sm text-white"></div>
+      <div class="submit-row mt-5 sm:mt-6">
+        <button type="submit" class="submit-button motion-btn motion-next w-full bg-gradient-to-r from-blueglow to-violetglow px-5 py-3.5 text-base font-bold text-white shadow-glow sm:px-6 sm:py-4 sm:text-lg">
           <span class="motion-label">Submit Lost Item</span>
           <span class="motion-icon text-xl">&#8250;</span>
         </button>
@@ -128,34 +198,60 @@ tailwind.config = { theme: { extend: { colors: { deep:"#020617", text:"#f5f7fb",
     </form>
   </section>
 </main>
+<script src="js/config.js"></script>
 <script src="js/app.js"></script>
 <script>
 Back2YouAPI.requireAuth();
-
+async function copyTrackingCode(code, button) {
+  try {
+    await navigator.clipboard.writeText(code);
+    button.textContent = "Copied";
+    setTimeout(() => {
+      button.textContent = "Copy Code";
+    }, 1400);
+  } catch (error) {
+    button.textContent = "Copy Failed";
+    setTimeout(() => {
+      button.textContent = "Copy Code";
+    }, 1400);
+  }
+}
 document.getElementById("lostReportForm").addEventListener("submit", async function (event) {
   event.preventDefault();
-
   const formData = new FormData();
   formData.append("itemName", document.getElementById("lostItemName").value.trim());
   formData.append("category", document.getElementById("lostCategory").value.trim());
   formData.append("eventLocation", document.getElementById("lostLocation").value.trim());
   formData.append("eventDate", document.getElementById("lostDate").value);
+  formData.append("contactPhone", document.getElementById("lostPhoneNumber").value.trim());
   formData.append("description", document.getElementById("lostDescription").value.trim());
-
   const fileInput = document.querySelector('input[type="file"]');
   if (fileInput.files[0]) {
     formData.append("image", fileInput.files[0]);
   }
-
   try {
     const response = await Back2YouAPI.request("/items/lost", {
       method: "POST",
       body: formData
     });
-
     const message = document.getElementById("trackingMessage");
-    message.textContent = `Tracking code generated: ${response.data.trackingCode}. Use this code in Status Tracking to check your item progress.`;
+    const trackingCode = response && response.data
+      ? (response.data.trackingCode || (response.data._doc && response.data._doc.trackingCode) || "")
+      : "";
+    if (!trackingCode) {
+      throw new Error("The item was saved, but the tracking code was missing in the response.");
+    }
+    message.innerHTML = [
+      "<p>Tracking code generated. Use this code in Status Tracking to check your item progress.</p>",
+      '<div class="tracking-code-box">',
+      '  <span class="tracking-code-value">' + trackingCode + '</span>',
+      '  <button type="button" class="tracking-copy-btn">Copy Code</button>',
+      '</div>'
+    ].join("");
     message.classList.remove("hidden");
+    message.querySelector(".tracking-copy-btn").addEventListener("click", function () {
+      copyTrackingCode(trackingCode, this);
+    });
     this.reset();
   } catch (error) {
     alert(error.message);
@@ -164,4 +260,8 @@ document.getElementById("lostReportForm").addEventListener("submit", async funct
 </script>
 </body>
 </html>
+
+
+
+
 

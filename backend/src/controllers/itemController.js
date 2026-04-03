@@ -10,6 +10,34 @@ function buildActivity(status, note, updatedBy) {
   };
 }
 
+function serializeItemForResponse(item) {
+  if (!item) {
+    return item;
+  }
+
+  if (item._doc) {
+    return { ...item._doc };
+  }
+
+  if (typeof item.toObject === "function") {
+    return item.toObject();
+  }
+
+  return { ...item };
+}
+
+async function generateUniqueTrackingCode(prefix) {
+  let trackingCode;
+  let exists = true;
+
+  while (exists) {
+    trackingCode = generateTrackingCode(prefix);
+    exists = await Item.existsByTrackingCode(trackingCode);
+  }
+
+  return trackingCode;
+}
+
 async function createItem(req, res, reportType) {
   const {
     itemName,
@@ -18,6 +46,7 @@ async function createItem(req, res, reportType) {
     eventLocation,
     eventDate,
     storageLocation,
+    contactPhone,
     tags
   } = req.body;
 
@@ -26,7 +55,7 @@ async function createItem(req, res, reportType) {
     throw new Error("Item name, category, description, location, and date are required");
   }
 
-  const trackingCode = generateTrackingCode(reportType === "lost" ? "LNF" : "FND");
+  const trackingCode = await generateUniqueTrackingCode(reportType === "lost" ? "LNF" : "FND");
   const normalizedTags = Array.isArray(tags)
     ? tags
     : typeof tags === "string" && tags.trim()
@@ -44,6 +73,7 @@ async function createItem(req, res, reportType) {
     eventLocation,
     eventDate,
     storageLocation,
+    contactPhone,
     status: initialStatus,
     reporterId: req.user._id,
     imageUrl: req.file ? `/uploads/${req.file.filename}` : undefined,
@@ -59,10 +89,41 @@ async function createItem(req, res, reportType) {
     ]
   });
 
+  const potentialMatch = await Item.findPotentialMatch(item);
+  let finalItem = item;
+  let autoMatched = false;
+
+  if (potentialMatch) {
+    autoMatched = true;
+    finalItem = await Item.updateItem(item._id, {
+      status: "found",
+      matchedItemId: potentialMatch._id,
+      activityLog: [
+        ...item.activityLog,
+        buildActivity("found", `Automatically matched with ${potentialMatch.trackingCode}`, req.user._id)
+      ]
+    });
+
+    await Item.updateItem(potentialMatch._id, {
+      status: "found",
+      matchedItemId: item._id,
+      activityLog: [
+        ...potentialMatch.activityLog,
+        buildActivity("found", `Automatically matched with ${item.trackingCode}`, req.user._id)
+      ]
+    });
+  }
+
   res.status(201).json({
     success: true,
-    message: `${reportType} item report created successfully`,
-    data: item
+    message: autoMatched
+      ? `${reportType} item report created and matched successfully`
+      : `${reportType} item report created successfully`,
+    data: {
+      ...serializeItemForResponse(finalItem),
+      autoMatched,
+      matchedTrackingCode: potentialMatch ? potentialMatch.trackingCode : null
+    }
   });
 }
 
@@ -150,3 +211,4 @@ module.exports = {
   getDashboardSummary,
   updateItemStatus
 };
+

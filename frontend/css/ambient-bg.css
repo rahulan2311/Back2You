@@ -1,0 +1,178 @@
+:root{
+  --ambient-blue:rgba(79,124,255,.24);
+  --ambient-violet:rgba(139,61,255,.22);
+  --ambient-cyan:rgba(51,210,255,.18);
+  --ambient-white:rgba(255,255,255,.06);
+}
+
+html{
+  min-height:100%;
+  background:#121742;
+}
+
+body{
+  position:relative;
+  min-height:100vh;
+  isolation:isolate;
+}
+
+body > *{
+  position:relative;
+  z-index:1;
+}
+
+body::before,
+body::after{
+  content:"";
+  position:fixed;
+  inset:auto;
+  pointer-events:none;
+  z-index:0;
+  filter:blur(18px);
+  will-change:transform,opacity;
+}
+
+body::before{
+  top:-12rem;
+  left:-10rem;
+  width:34rem;
+  height:34rem;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 30% 30%,var(--ambient-white) 0 10%,transparent 45%),
+    radial-gradient(circle,var(--ambient-blue) 0 30%,transparent 68%);
+  animation:ambientFloatOne 18s ease-in-out infinite alternate;
+}
+
+body::after{
+  right:-8rem;
+  bottom:-10rem;
+  width:30rem;
+  height:30rem;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 62% 38%,var(--ambient-white) 0 8%,transparent 40%),
+    radial-gradient(circle,var(--ambient-violet) 0 32%,transparent 70%);
+  animation:ambientFloatTwo 22s ease-in-out infinite alternate;
+}
+
+body.app-stripes::before{
+  inset:0;
+  width:auto;
+  height:auto;
+  left:auto;
+  top:auto;
+  border-radius:0;
+  filter:blur(0);
+  background:
+    repeating-linear-gradient(118deg,rgba(255,255,255,.09) 0 16px,transparent 16px 38px),
+    linear-gradient(120deg,rgba(79,124,255,.16),rgba(124,77,255,.11) 42%,rgba(51,210,255,.16));
+  background-size:180px 180px,100% 100%;
+  background-position:0 0,0 0;
+  opacity:.56;
+  animation:stripeScrollA 10s linear infinite;
+}
+
+body.app-stripes::after{
+  inset:0;
+  width:auto;
+  height:auto;
+  right:auto;
+  bottom:auto;
+  border-radius:0;
+  background:
+    repeating-linear-gradient(118deg,rgba(255,255,255,.05) 0 10px,transparent 10px 28px),
+    radial-gradient(circle at 12% 18%,rgba(79,124,255,.24),transparent 24%),
+    radial-gradient(circle at 82% 16%,rgba(124,77,255,.2),transparent 26%),
+    radial-gradient(circle at 56% 78%,rgba(51,210,255,.16),transparent 24%),
+    radial-gradient(circle at 24% 82%,rgba(79,124,255,.14),transparent 20%);
+  background-size:120px 120px,auto,auto,auto,auto;
+  background-position:0 0,0 0,0 0,0 0,0 0;
+  filter:blur(12px);
+  opacity:.72;
+  animation:stripeScrollB 14s linear infinite, orbPulse 16s ease-in-out infinite alternate;
+}
+
+main{
+  position:relative;
+}
+
+main::before{
+  content:"";
+  position:fixed;
+  left:12%;
+  top:22%;
+  width:24rem;
+  height:24rem;
+  border-radius:50%;
+  pointer-events:none;
+  z-index:0;
+  background:radial-gradient(circle,var(--ambient-cyan) 0 28%,transparent 68%);
+  filter:blur(28px);
+  opacity:.55;
+  will-change:transform,opacity;
+  animation:ambientFloatThree 20s ease-in-out infinite alternate;
+}
+
+body.app-stripes main::before{
+  inset:0;
+  left:auto;
+  top:auto;
+  width:auto;
+  height:auto;
+  background:
+    linear-gradient(90deg,transparent 0%,rgba(255,255,255,.12) 18%,transparent 36%,transparent 64%,rgba(255,255,255,.1) 82%,transparent 100%);
+  background-size:240px 100%;
+  background-position:0 0;
+  border-radius:0;
+  filter:blur(2px);
+  mix-blend-mode:screen;
+  opacity:.24;
+  animation:stripeGlowSweep 7s linear infinite;
+}
+
+@keyframes ambientFloatOne{
+  0%{transform:translate3d(0,0,0) scale(1);opacity:.72}
+  50%{transform:translate3d(4vw,3vh,0) scale(1.08);opacity:.92}
+  100%{transform:translate3d(8vw,7vh,0) scale(.96);opacity:.64}
+}
+
+@keyframes ambientFloatTwo{
+  0%{transform:translate3d(0,0,0) scale(1);opacity:.58}
+  50%{transform:translate3d(-5vw,-2vh,0) scale(1.04);opacity:.82}
+  100%{transform:translate3d(-10vw,-7vh,0) scale(1.12);opacity:.62}
+}
+
+@keyframes ambientFloatThree{
+  0%{transform:translate3d(0,0,0) scale(1);opacity:.34}
+  50%{transform:translate3d(6vw,-2vh,0) scale(1.1);opacity:.5}
+  100%{transform:translate3d(12vw,5vh,0) scale(.92);opacity:.28}
+}
+
+@keyframes stripeScrollA{
+  0%{background-position:0 0,0 0}
+  100%{background-position:180px 0,0 0}
+}
+
+@keyframes stripeScrollB{
+  0%{background-position:0 0,0 0,0 0,0 0,0 0}
+  100%{background-position:120px 0,0 0,0 0,0 0,0 0}
+}
+
+@keyframes stripeGlowSweep{
+  0%{background-position:0 0}
+  100%{background-position:240px 0}
+}
+
+@keyframes orbPulse{
+  0%{transform:translate3d(0,0,0) scale(1);opacity:.88}
+  100%{transform:translate3d(0,-2%,0) scale(1.08);opacity:1}
+}
+
+@media (prefers-reduced-motion: reduce){
+  body::before,
+  body::after,
+  main::before{
+    animation:none;
+  }
+}

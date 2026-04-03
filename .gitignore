@@ -6,3 +6,5 @@ backend/server.err.log
 backend/verify.out.log
 backend/verify.err.log
 *.log
+*.swp
+*.swo

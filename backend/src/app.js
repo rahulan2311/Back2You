@@ -7,6 +7,7 @@ const authRoutes = require("./routes/authRoutes");
 const itemRoutes = require("./routes/itemRoutes");
 const claimRoutes = require("./routes/claimRoutes");
 const feedbackRoutes = require("./routes/feedbackRoutes");
+const dataRoutes = require("./routes/dataRoutes");
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 
 const app = express();
@@ -47,6 +48,7 @@ app.use(["/api/auth", "/auth"], authRoutes);
 app.use(["/api/items", "/items"], itemRoutes);
 app.use(["/api/claims", "/claims"], claimRoutes);
 app.use(["/api/feedback", "/feedback"], feedbackRoutes);
+app.use(["/api/data", "/data"], dataRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

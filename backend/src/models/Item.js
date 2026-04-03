@@ -63,6 +63,10 @@ const itemSchema = new mongoose.Schema(
       type: String,
       trim: true
     },
+    contactPhone: {
+      type: String,
+      trim: true
+    },
     imageUrl: {
       type: String,
       trim: true
@@ -99,6 +103,54 @@ itemSchema.index({
 
 const ItemModel = mongoose.models.Item || mongoose.model("Item", itemSchema);
 
+function normalizeWords(value) {
+  return String(value || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, " ")
+    .split(/\s+/)
+    .filter((word) => word.length > 2);
+}
+
+function countSharedWords(left, right) {
+  const leftWords = new Set(normalizeWords(left));
+  const rightWords = new Set(normalizeWords(right));
+  let count = 0;
+
+  for (const word of leftWords) {
+    if (rightWords.has(word)) {
+      count += 1;
+    }
+  }
+
+  return count;
+}
+
+function scorePotentialMatch(sourceItem, candidateItem) {
+  let score = 0;
+
+  if (sourceItem.category.trim().toLowerCase() === candidateItem.category.trim().toLowerCase()) {
+    score += 4;
+  }
+
+  score += Math.min(countSharedWords(sourceItem.itemName, candidateItem.itemName), 3) * 3;
+  score += Math.min(countSharedWords(sourceItem.description, candidateItem.description), 4) * 2;
+  score += Math.min(countSharedWords(sourceItem.eventLocation, candidateItem.eventLocation), 2) * 2;
+
+  const sourceDate = new Date(sourceItem.eventDate).getTime();
+  const candidateDate = new Date(candidateItem.eventDate).getTime();
+  const dayDifference = Math.abs(sourceDate - candidateDate) / (1000 * 60 * 60 * 24);
+
+  if (dayDifference <= 1) {
+    score += 3;
+  } else if (dayDifference <= 3) {
+    score += 2;
+  } else if (dayDifference <= 7) {
+    score += 1;
+  }
+
+  return score;
+}
+
 async function createItem(item) {
   return ItemModel.create(item);
 }
@@ -107,10 +159,40 @@ async function findById(id) {
   return ItemModel.findById(id).lean();
 }
 
+async function existsByTrackingCode(trackingCode) {
+  return ItemModel.exists({ trackingCode });
+}
+
+async function findPotentialMatch(item) {
+  const candidateReportType = item.reportType === "lost" ? "found" : "lost";
+  const candidates = await ItemModel.find({
+    reportType: candidateReportType,
+    status: { $in: ["reported", "still-searching", "found"] },
+    matchedItemId: { $exists: false },
+    category: item.category
+  })
+    .sort({ createdAt: -1 })
+    .limit(25)
+    .lean();
+
+  let bestMatch = null;
+  let bestScore = 0;
+
+  for (const candidate of candidates) {
+    const score = scorePotentialMatch(item, candidate);
+    if (score > bestScore) {
+      bestScore = score;
+      bestMatch = candidate;
+    }
+  }
+
+  return bestScore >= 8 ? bestMatch : null;
+}
+
 async function findByTrackingCode(trackingCode) {
   return ItemModel.findOne({ trackingCode })
     .populate("reporterId", "name email rollNumber")
-    .populate("matchedItemId", "trackingCode itemName status")
+    .populate("matchedItemId", "trackingCode itemName status reportType eventLocation eventDate")
     .lean()
     .then((item) => {
       if (!item) {
@@ -131,7 +213,8 @@ async function searchItems({ q, category, reportType, status }) {
       { trackingCode: { $regex: q, $options: "i" } },
       { itemName: { $regex: q, $options: "i" } },
       { category: { $regex: q, $options: "i" } },
-      { description: { $regex: q, $options: "i" } }
+      { description: { $regex: q, $options: "i" } },
+      { eventLocation: { $regex: q, $options: "i" } }
     ];
   }
 
@@ -190,6 +273,8 @@ async function updateItem(id, updates) {
 module.exports = {
   createItem,
   findById,
+  existsByTrackingCode,
+  findPotentialMatch,
   findByTrackingCode,
   searchItems,
   findByReporterId,

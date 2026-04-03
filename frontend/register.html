@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="css/ambient-bg.css"/>
 <script>
 tailwind.config={theme:{extend:{colors:{deep:"#020617",text:"#f5f7fb",muted:"#8e97ab",blueglow:"#4f7cff",violetglow:"#8b3dff",cyanglow:"#33d2ff",danger:"#fb7185"},fontFamily:{sans:["Outfit","sans-serif"]},boxShadow:{panel:"0 30px 90px rgba(0,0,0,.55)",glow:"0 0 38px rgba(79,124,255,.22)"}}}}
 </script>
@@ -20,10 +21,11 @@ tailwind.config={theme:{extend:{colors:{deep:"#020617",text:"#f5f7fb",muted:"#8e
   .action-pill__label{flex:1;text-align:center}
   .action-pill__icon{display:inline-flex;height:3rem;width:3rem;align-items:center;justify-content:center;border-radius:999px;transition:transform .28s ease}
   .action-pill:hover .action-pill__icon{transform:translateX(4px) scale(1.04)}
-  .back-pill{display:inline-flex;align-items:center;gap:.7rem;border-radius:999px;background:#343434;padding:.8rem 1.35rem;font-size:.95rem;font-weight:500;color:#fff;transition:transform .25s ease,background-color .25s ease,box-shadow .25s ease}
-  .back-pill:hover{transform:translateY(-2px);background:#3c3c3c;box-shadow:0 12px 28px rgba(0,0,0,.28)}
-  .back-pill__icon,.back-pill__label{transition:transform .25s ease}
-  .back-pill:hover .back-pill__icon,.back-pill:hover .back-pill__label{transform:translateX(-2px)}
+  .back-pill{display:inline-flex;height:3rem;width:3rem;align-items:center;justify-content:center;border-radius:999px;border:1px solid rgba(255,255,255,.09);background:rgba(5,8,20,.52);color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 10px 26px rgba(0,0,0,.24);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);transition:transform .25s ease,border-color .25s ease,background-color .25s ease,box-shadow .25s ease}
+  .back-pill:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.18);background:rgba(8,12,28,.72);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 14px 30px rgba(0,0,0,.32)}
+  .back-pill__icon{display:inline-flex;align-items:center;justify-content:center;transition:transform .25s ease}
+  .back-pill:hover .back-pill__icon{transform:translateX(-2px)}
+  .back-pill__label{display:none}
   .form-input{background:rgba(255,255,255,.92)!important;color:#111827!important}
   .form-input::placeholder{color:#8490a8!important}
   .form-input:focus{border-color:#8b3dff!important;box-shadow:0 0 0 1px rgba(139,61,255,.4)!important}
@@ -31,7 +33,7 @@ tailwind.config={theme:{extend:{colors:{deep:"#020617",text:"#f5f7fb",muted:"#8e
   .helper-box{display:none;margin-top:1rem;border-radius:1rem;padding:.85rem 1rem;font-size:.95rem;line-height:1.5}
   .helper-box--error{display:block;border:1px solid rgba(251,113,133,.35);background:rgba(251,113,133,.12);color:#ffe4e6}
   .helper-box--success{display:block;border:1px solid rgba(74,222,128,.3);background:rgba(74,222,128,.12);color:#dcfce7}
-  @media (max-width:640px){.back-pill{padding:.68rem 1rem;font-size:.88rem}}
+  @media (max-width:640px){.back-pill{height:2.75rem;width:2.75rem}}
 </style>
 </head>
 <body class="min-h-screen text-text">
@@ -43,7 +45,7 @@ tailwind.config={theme:{extend:{colors:{deep:"#020617",text:"#f5f7fb",muted:"#8e
 </header>
 <main class="mx-auto flex min-h-[calc(100vh-81px)] max-w-7xl items-center justify-center px-4 py-8 sm:px-5 lg:px-8">
   <section class="glass w-full max-w-md rounded-[1.75rem] p-6 shadow-panel sm:max-w-lg sm:p-8">
-    <div class="mb-6 flex flex-col items-start gap-3 sm:flex-row sm:items-center"><a href="index.html" class="back-pill sm:shrink-0"><span class="back-pill__icon text-[1.45rem] leading-none">&#8249;</span><span class="back-pill__label">Back</span></a><h1 class="text-3xl font-extrabold text-white sm:text-4xl">Create Account</h1></div>
+    <div class="mb-6 flex flex-col items-start gap-3 sm:flex-row sm:items-center"><a href="index.html" class="back-pill sm:shrink-0" aria-label="Go back"><span class="back-pill__icon"><svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.4"><path stroke-linecap="round" stroke-linejoin="round" d="M15 18l-6-6 6-6"/></svg></span><span class="back-pill__label">Back</span></a><h1 class="text-3xl font-extrabold text-white sm:text-4xl">Create Account</h1></div>
     <form class="space-y-5" id="registerForm">
       <label class="block"><span class="mb-2.5 block text-lg font-medium text-text/70 sm:text-xl">Full Name</span><input id="fullName" class="form-input w-full rounded-2xl border border-white/10 px-4 py-3.5 text-lg placeholder:text-muted focus:ring-0 sm:px-5 sm:py-4 sm:text-xl" placeholder="Your full name" required/></label>
       <label class="block"><span class="mb-2.5 block text-lg font-medium text-text/70 sm:text-xl">Email Address</span><input id="registerEmail" class="form-input w-full rounded-2xl border border-white/10 px-4 py-3.5 text-lg placeholder:text-muted focus:ring-0 sm:px-5 sm:py-4 sm:text-xl" type="email" placeholder="you@university.edu" required/></label>
