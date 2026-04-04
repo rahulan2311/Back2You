@@ -5,13 +5,14 @@
 - Frontend + backend: Netlify
 - Database: MongoDB Atlas
 
-## Netlify
+## Netlify full-stack setup
 
 1. Connect the GitHub repo to Netlify from the repository root.
 2. Netlify will use `netlify.toml`.
 3. Build command: `npm install --prefix backend`
 4. Publish directory: `frontend`
 5. Functions directory: `netlify/functions`
+6. Branch to deploy: `master`
 
 ## Required environment variables
 
@@ -24,15 +25,26 @@
 
 ## Frontend API
 
-The frontend uses same-origin API calls through `frontend/js/config.js`:
+The frontend uses same-origin API calls in production through `frontend/js/config.js`:
 
 ```js
 window.BACK2YOU_API_BASE_URL = "/api";
 ```
 
+Netlify routes `/api/*` to the Express function bridge in `netlify/functions/api.js`.
+
+## Important behavior
+
+- The frontend is deployed as static files from `frontend/`
+- The backend runs through Netlify Functions
+- Report images are URL-based in the current deployment-safe version
+- Direct file uploads are not used in production right now
+
 ## Pre-deploy checklist
 
 - MongoDB Atlas cluster is reachable from the internet
 - Netlify environment variables are set
-- Backend function `/api/health` returns success
-- Registration, login, lost item, search, and status flows are tested
+- `npm run check` passes locally
+- Backend function `/api/health` returns success after deploy
+- Registration, login, lost item, found item, search, status, and dashboard flows are tested
+- Admin-only data access is verified
