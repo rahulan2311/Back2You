@@ -11,6 +11,35 @@ Back2You is a lost-and-found web application with a static frontend and a Node.j
 - `netlify/functions/` - Netlify function bridge
 - `netlify.toml` - Netlify build and redirect config
 - `DEPLOYMENT.md` - deployment notes
+- `scripts/validate-deploy.js` - lightweight deployment validation script
+
+## Run Locally
+
+```bash
+npm run dev
+```
+
+Then open `http://localhost:5000`.
+
+## Deployment Validation
+
+Run this before deployment:
+
+```bash
+npm run check
+```
+
+or:
+
+```bash
+npm run validate:deploy
+```
+
+The check verifies:
+- required project files exist
+- env example files include required keys
+- deployment config files exist
+- the local health endpoint responds
 
 ## Keep These Files
 

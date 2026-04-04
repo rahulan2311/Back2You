@@ -3,11 +3,11 @@ const asyncHandler = require("../utils/asyncHandler");
 const generateToken = require("../utils/generateToken");
 
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, rollNumber, password, role } = req.body;
+  const { name, email, rollNumber, password } = req.body;
 
-  if (!name || !email || !rollNumber || !password) {
+  if (!name || !email || !password) {
     res.status(400);
-    throw new Error("Name, email, roll number, and password are required");
+    throw new Error("Name, email, and password are required");
   }
 
   const existingUser = await User.findByEmailOrRollNumber(email, rollNumber);
@@ -22,7 +22,7 @@ const registerUser = asyncHandler(async (req, res) => {
     email,
     rollNumber,
     password,
-    role
+    role: "student"
   });
 
   res.status(201).json({

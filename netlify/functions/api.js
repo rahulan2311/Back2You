@@ -34,11 +34,16 @@ function normalizeEvent(event) {
 
 exports.handler = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
-  await ensureDatabaseConnection();
+  const normalizedEvent = normalizeEvent(event);
+  const isHealthRequest = normalizedEvent.path === "/health" || normalizedEvent.path === "/api/health";
+
+  if (!isHealthRequest) {
+    await ensureDatabaseConnection();
+  }
 
   if (!handler) {
     handler = serverless(app);
   }
 
-  return handler(normalizeEvent(event), context);
+  return handler(normalizedEvent, context);
 };

@@ -17,6 +17,12 @@ async function ensureDatabaseConnection() {
 }
 
 module.exports = async (req, res) => {
-  await ensureDatabaseConnection();
+  const requestPath = req.url || req.originalUrl || "/";
+  const isHealthRequest = requestPath === "/health" || requestPath === "/api/health";
+
+  if (!isHealthRequest) {
+    await ensureDatabaseConnection();
+  }
+
   return app(req, res);
 };

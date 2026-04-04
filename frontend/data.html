@@ -82,13 +82,18 @@ tailwind.config={theme:{extend:{colors:{deep:"#020617",text:"#f5f7fb",soft:"#d9d
 <script>
 if (Back2YouAPI.requireAuth()) {
   const currentUser = Back2YouAPI.getCurrentUser();
-  const greeting = document.getElementById("dataUserGreeting");
-  if (currentUser && currentUser.name) {
-    greeting.textContent = "Viewing data as " + currentUser.name;
-  }
 
-  const dataStatus = document.getElementById("dataStatus");
-  const countGrid = document.getElementById("countGrid");
+  if (!currentUser || currentUser.role !== "admin") {
+    alert("Only the admin can access backend data.");
+    location.href = "dashboard.html";
+  } else {
+    const greeting = document.getElementById("dataUserGreeting");
+    if (currentUser && currentUser.name) {
+      greeting.textContent = "Viewing data as " + currentUser.name;
+    }
+
+    const dataStatus = document.getElementById("dataStatus");
+    const countGrid = document.getElementById("countGrid");
 
   function formatDate(value) {
     if (!value) return "-";
@@ -201,7 +206,9 @@ if (Back2YouAPI.requireAuth()) {
       dataStatus.textContent = error.message;
       dataStatus.className = "status-box status-box--error";
     });
+  }
 }
 </script>
 </body>
 </html>
+

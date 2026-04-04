@@ -17,8 +17,8 @@ const userSchema = new mongoose.Schema(
     },
     rollNumber: {
       type: String,
-      required: true,
       unique: true,
+      sparse: true,
       uppercase: true,
       trim: true
     },
@@ -55,9 +55,21 @@ async function findById(id) {
 }
 
 async function findByEmailOrRollNumber(email, rollNumber) {
-  return UserModel.findOne({
-    $or: [{ email: email.toLowerCase() }, { rollNumber: rollNumber.toUpperCase() }]
-  }).lean();
+  const filters = [];
+
+  if (email) {
+    filters.push({ email: email.toLowerCase() });
+  }
+
+  if (rollNumber) {
+    filters.push({ rollNumber: rollNumber.toUpperCase() });
+  }
+
+  if (!filters.length) {
+    return null;
+  }
+
+  return UserModel.findOne({ $or: filters }).lean();
 }
 
 async function findByLogin(value) {
@@ -70,7 +82,7 @@ async function createUser({ name, email, rollNumber, password, role = "student" 
   const user = await UserModel.create({
     name,
     email,
-    rollNumber,
+    rollNumber: rollNumber || undefined,
     password,
     role
   });

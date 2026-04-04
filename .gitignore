@@ -8,3 +8,4 @@ backend/verify.err.log
 *.log
 *.swp
 *.swo
+backend-start.err

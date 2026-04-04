@@ -49,7 +49,6 @@ tailwind.config={theme:{extend:{colors:{deep:"#020617",text:"#f5f7fb",muted:"#8e
     <form class="space-y-5" id="registerForm">
       <label class="block"><span class="mb-2.5 block text-lg font-medium text-text/70 sm:text-xl">Full Name</span><input id="fullName" class="form-input w-full rounded-2xl border border-white/10 px-4 py-3.5 text-lg placeholder:text-muted focus:ring-0 sm:px-5 sm:py-4 sm:text-xl" placeholder="Your full name" required/></label>
       <label class="block"><span class="mb-2.5 block text-lg font-medium text-text/70 sm:text-xl">Email Address</span><input id="registerEmail" class="form-input w-full rounded-2xl border border-white/10 px-4 py-3.5 text-lg placeholder:text-muted focus:ring-0 sm:px-5 sm:py-4 sm:text-xl" type="email" placeholder="you@university.edu" required/></label>
-      <label class="block"><span class="mb-2.5 block text-lg font-medium text-text/70 sm:text-xl">Roll Number</span><input id="rollNumber" class="form-input w-full rounded-2xl border border-white/10 px-4 py-3.5 text-lg placeholder:text-muted focus:ring-0 sm:px-5 sm:py-4 sm:text-xl" placeholder="22CS1042" required/></label>
       <label class="block"><span class="mb-2.5 block text-lg font-medium text-text/70 sm:text-xl">Password</span><input id="registerPassword" type="password" class="form-input w-full rounded-2xl border border-white/10 px-4 py-3.5 text-lg placeholder:text-muted focus:ring-0 sm:px-5 sm:py-4 sm:text-xl" placeholder="Enter password" required/></label>
       <label class="block"><span class="mb-2.5 block text-lg font-medium text-text/70 sm:text-xl">Confirm Password</span><input id="confirmPassword" type="password" class="form-input w-full rounded-2xl border border-white/10 px-4 py-3.5 text-lg placeholder:text-muted focus:ring-0 sm:px-5 sm:py-4 sm:text-xl" placeholder="Re-enter password" required/></label>
       <div id="registerMessage" class="helper-box"></div>
@@ -73,7 +72,6 @@ document.getElementById("registerForm").addEventListener("submit", async functio
 
   const fullName = document.getElementById("fullName").value.trim();
   const email = document.getElementById("registerEmail").value.trim();
-  const rollNumber = document.getElementById("rollNumber").value.trim();
   const password = document.getElementById("registerPassword").value;
   const confirmPassword = document.getElementById("confirmPassword").value;
 
@@ -93,7 +91,6 @@ document.getElementById("registerForm").addEventListener("submit", async functio
       body: JSON.stringify({
         name: fullName,
         email,
-        rollNumber,
         password
       })
     });
@@ -110,4 +107,3 @@ document.getElementById("registerForm").addEventListener("submit", async functio
 </script>
 </body>
 </html>
-

@@ -26,6 +26,24 @@ function serializeItemForResponse(item) {
   return { ...item };
 }
 
+function normalizeImageUrl(value) {
+  const trimmedValue = String(value || "").trim();
+
+  if (!trimmedValue) {
+    return undefined;
+  }
+
+  try {
+    const parsedUrl = new URL(trimmedValue);
+    if (!["http:", "https:"].includes(parsedUrl.protocol)) {
+      return null;
+    }
+    return parsedUrl.toString();
+  } catch (error) {
+    return null;
+  }
+}
+
 async function generateUniqueTrackingCode(prefix) {
   let trackingCode;
   let exists = true;
@@ -47,12 +65,19 @@ async function createItem(req, res, reportType) {
     eventDate,
     storageLocation,
     contactPhone,
-    tags
+    tags,
+    imageUrl
   } = req.body;
 
   if (!itemName || !category || !description || !eventLocation || !eventDate) {
     res.status(400);
     throw new Error("Item name, category, description, location, and date are required");
+  }
+
+  const normalizedImageUrl = normalizeImageUrl(imageUrl);
+  if (imageUrl && !normalizedImageUrl) {
+    res.status(400);
+    throw new Error("Image URL must be a valid http or https link");
   }
 
   const trackingCode = await generateUniqueTrackingCode(reportType === "lost" ? "LNF" : "FND");
@@ -76,7 +101,7 @@ async function createItem(req, res, reportType) {
     contactPhone,
     status: initialStatus,
     reporterId: req.user._id,
-    imageUrl: req.file ? `/uploads/${req.file.filename}` : undefined,
+    imageUrl: normalizedImageUrl,
     tags: normalizedTags,
     activityLog: [
       buildActivity(
@@ -211,4 +236,3 @@ module.exports = {
   getDashboardSummary,
   updateItemStatus
 };
-

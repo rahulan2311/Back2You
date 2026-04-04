@@ -1,0 +1,10 @@
+{
+  "name": "back2you-workspace",
+  "private": true,
+  "scripts": {
+    "dev": "node backend/src/server.js",
+    "start": "node backend/src/server.js",
+    "check": "node scripts/validate-deploy.js",
+    "validate:deploy": "node scripts/validate-deploy.js"
+  }
+}

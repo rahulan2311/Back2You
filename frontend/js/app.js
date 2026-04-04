@@ -40,15 +40,29 @@
       headers.Authorization = `Bearer ${token}`;
     }
 
+    const primaryUrl = `${API_BASE_URL}${path}`;
+    const fallbackBaseUrl = API_BASE_URL.replace("localhost", "127.0.0.1");
+    const fallbackUrl = fallbackBaseUrl === API_BASE_URL ? null : `${fallbackBaseUrl}${path}`;
     let response;
 
     try {
-      response = await fetch(`${API_BASE_URL}${path}`, {
+      response = await fetch(primaryUrl, {
         ...options,
         headers
       });
     } catch (error) {
-      throw new Error(`Unable to reach the server at ${API_BASE_URL}. Check the API deployment and try again.`);
+      if (fallbackUrl) {
+        try {
+          response = await fetch(fallbackUrl, {
+            ...options,
+            headers
+          });
+        } catch (fallbackError) {
+          throw new Error(`Unable to reach the server at ${API_BASE_URL}. Start the backend with: cd /d "d:\\lost and found\\backend" && npm.cmd start`);
+        }
+      } else {
+        throw new Error(`Unable to reach the server at ${API_BASE_URL}. Start the backend with: cd /d "d:\\lost and found\\backend" && npm.cmd start`);
+      }
     }
 
     const rawBody = await response.text();

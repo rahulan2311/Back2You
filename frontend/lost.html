@@ -34,7 +34,6 @@ tailwind.config = { theme: { extend: { colors: { deep:"#020617", text:"#f5f7fb",
   }
   .report-textarea { min-height: 8.5rem; width: 100%; font-size: 1rem; resize: vertical; color: #111827 !important; background: rgba(255,255,255,.96) !important; -webkit-text-fill-color: #111827; }
   .report-textarea::placeholder { color: #94a3b8 !important; }
-  .report-file { width: 100%; overflow: hidden; }
   .report-feedback { word-break: break-word; }
   .tracking-code-box { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:.85rem; border:1px solid rgba(79,124,255,.22); background:rgba(255,255,255,.05); border-radius:1rem; padding:.9rem 1rem; margin-top:.8rem; }
   .tracking-code-value { font-size:1rem; font-weight:800; letter-spacing:.12em; color:#ffffff; }
@@ -143,14 +142,8 @@ tailwind.config = { theme: { extend: { colors: { deep:"#020617", text:"#f5f7fb",
       line-height: 1.15;
     }
     .report-input,
-    .report-textarea,
-    .report-file {
+    .report-textarea {
       border-radius: 1rem;
-    }
-    .report-file {
-      padding-top: 1rem;
-      padding-bottom: 1rem;
-      font-size: .95rem;
     }
     .submit-row {
       margin-top: 1rem;
@@ -186,7 +179,7 @@ tailwind.config = { theme: { extend: { colors: { deep:"#020617", text:"#f5f7fb",
         <input id="lostDate" type="date" onclick="this.showPicker && this.showPicker()" class="report-input rounded-2xl border-white/10 bg-white/8 px-4 py-3.5 text-white focus:border-blueglow focus:ring-blueglow" required/>
         <input id="lostPhoneNumber" type="tel" inputmode="tel" class="report-input md:col-span-2 rounded-2xl border-white/10 bg-white/8 px-4 py-3.5 text-white placeholder:text-muted focus:border-blueglow focus:ring-blueglow" placeholder="Phone Number" required/>
         <textarea id="lostDescription" rows="5" class="report-textarea md:col-span-2 rounded-[1.5rem] border-white/10 bg-white/8 px-4 py-3.5 text-white placeholder:text-muted focus:border-blueglow focus:ring-blueglow" placeholder="Description" required></textarea>
-        <input type="file" class="report-file md:col-span-2 rounded-2xl border-white/10 bg-white/8 px-4 py-3.5 text-white file:mr-4 file:rounded-full file:border-0 file:bg-white file:px-4 file:py-2 file:text-sm file:font-bold file:text-deep"/>
+        <input id="lostImageUrl" type="url" class="report-input md:col-span-2 rounded-2xl border-white/10 bg-white/8 px-4 py-3.5 text-white placeholder:text-muted focus:border-blueglow focus:ring-blueglow" placeholder="Image URL (optional, use https://...)"/>
       </div>
       <div id="trackingMessage" class="report-feedback mt-5 hidden rounded-[1.25rem] border border-blueglow/25 bg-blueglow/10 px-4 py-3 text-sm text-white"></div>
       <div class="submit-row mt-5 sm:mt-6">
@@ -218,21 +211,19 @@ async function copyTrackingCode(code, button) {
 }
 document.getElementById("lostReportForm").addEventListener("submit", async function (event) {
   event.preventDefault();
-  const formData = new FormData();
-  formData.append("itemName", document.getElementById("lostItemName").value.trim());
-  formData.append("category", document.getElementById("lostCategory").value.trim());
-  formData.append("eventLocation", document.getElementById("lostLocation").value.trim());
-  formData.append("eventDate", document.getElementById("lostDate").value);
-  formData.append("contactPhone", document.getElementById("lostPhoneNumber").value.trim());
-  formData.append("description", document.getElementById("lostDescription").value.trim());
-  const fileInput = document.querySelector('input[type="file"]');
-  if (fileInput.files[0]) {
-    formData.append("image", fileInput.files[0]);
-  }
+  const payload = {
+    itemName: document.getElementById("lostItemName").value.trim(),
+    category: document.getElementById("lostCategory").value.trim(),
+    eventLocation: document.getElementById("lostLocation").value.trim(),
+    eventDate: document.getElementById("lostDate").value,
+    contactPhone: document.getElementById("lostPhoneNumber").value.trim(),
+    description: document.getElementById("lostDescription").value.trim(),
+    imageUrl: document.getElementById("lostImageUrl").value.trim()
+  };
   try {
     const response = await Back2YouAPI.request("/items/lost", {
       method: "POST",
-      body: formData
+      body: JSON.stringify(payload)
     });
     const message = document.getElementById("trackingMessage");
     const trackingCode = response && response.data
@@ -260,8 +251,3 @@ document.getElementById("lostReportForm").addEventListener("submit", async funct
 </script>
 </body>
 </html>
-
-
-
-
-
