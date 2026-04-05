@@ -1,14 +1,2 @@
 [build]
-  command = "npm install --prefix backend"
   publish = "frontend"
-  functions = "netlify/functions"
-
-[functions]
-  node_bundler = "esbuild"
-  external_node_modules = ["express", "cors", "morgan", "dotenv", "jsonwebtoken", "bcryptjs", "mongoose", "serverless-http"]
-  included_files = ["backend/src/**"]
-
-[[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/api/:splat"
-  status = 200

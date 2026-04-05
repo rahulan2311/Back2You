@@ -2,7 +2,8 @@
   const metaApiBase = document.querySelector('meta[name="back2you-api-base"]')?.content?.trim();
   const runtimeApiBase = window.BACK2YOU_API_BASE_URL;
   const isLocalHost = ["localhost", "127.0.0.1"].includes(window.location.hostname);
-  const API_BASE_URL = runtimeApiBase || metaApiBase || (isLocalHost ? "http://localhost:5000/api" : "/api");
+  const isRenderHost = window.location.hostname.endsWith(".onrender.com");
+  const API_BASE_URL = runtimeApiBase || metaApiBase || (isLocalHost ? "http://localhost:5000/api" : (isRenderHost ? "/api" : ""));
   const TOKEN_KEY = "back2youAuthToken";
   const USER_KEY = "back2youAuthUser";
 
@@ -28,6 +29,10 @@
   }
 
   async function request(path, options = {}) {
+    if (!API_BASE_URL) {
+      throw new Error("API base URL is not configured. Add frontend/js/config.production.js with your Render API URL before deploying the frontend.");
+    }
+
     const headers = { ...(options.headers || {}) };
     const token = getToken();
     const isFormData = typeof FormData !== "undefined" && options.body instanceof FormData;

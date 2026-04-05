@@ -2,49 +2,56 @@
 
 ## Recommended stack
 
-- Frontend + backend: Netlify
+- Frontend: Netlify
+- Backend API: Render Web Service
 - Database: MongoDB Atlas
 
-## Netlify full-stack setup
+## Render backend setup
 
-1. Connect the GitHub repo to Netlify from the repository root.
-2. Netlify will use `netlify.toml`.
-3. Build command: `npm install --prefix backend`
-4. Publish directory: `frontend`
-5. Functions directory: `netlify/functions`
-6. Branch to deploy: `master`
+1. Create a Render Web Service from the `backend` directory.
+2. Build command: `npm install`
+3. Start command: `npm start`
+4. Health check path: `/api/health`
+5. Use Node `20`
 
-## Required environment variables
+## Required backend environment variables
 
 - `NODE_ENV=production`
-- `MONGO_URI=your-mongodb-connection-string`
+- `MONGO_URI=your-mongodb-atlas-connection-string`
 - `JWT_SECRET=replace-with-a-long-random-secret`
 - `JWT_EXPIRES_IN=7d`
 - `CLIENT_URL=https://your-netlify-site.netlify.app`
 - `CLIENT_URLS=https://your-netlify-site.netlify.app`
 
-## Frontend API
+## Netlify frontend setup
 
-The frontend uses same-origin API calls in production through `frontend/js/config.js`:
+1. Copy `frontend/js/config.example.js` to `frontend/js/config.production.js`
+2. Update `window.BACK2YOU_API_BASE_URL` to your Render backend URL
+3. Connect the repo root to Netlify
+4. Netlify will use `netlify.toml`
+5. Publish directory: `frontend`
+6. Branch to deploy: `master`
+
+Example production frontend config:
 
 ```js
-window.BACK2YOU_API_BASE_URL = "/api";
+window.BACK2YOU_API_BASE_URL = "https://your-render-service.onrender.com/api";
 ```
-
-Netlify routes `/api/*` to the Express function bridge in `netlify/functions/api.js`.
 
 ## Important behavior
 
 - The frontend is deployed as static files from `frontend/`
-- The backend runs through Netlify Functions
+- The backend runs as a Render web service
+- MongoDB Atlas is the production database
 - Report images are URL-based in the current deployment-safe version
 - Direct file uploads are not used in production right now
 
 ## Pre-deploy checklist
 
 - MongoDB Atlas cluster is reachable from the internet
-- Netlify environment variables are set
+- Render environment variables are set
+- `frontend/js/config.production.js` points to the Render backend
 - `npm run check` passes locally
-- Backend function `/api/health` returns success after deploy
+- Backend route `/api/health` returns success after deploy
 - Registration, login, lost item, found item, search, status, and dashboard flows are tested
 - Admin-only data access is verified
