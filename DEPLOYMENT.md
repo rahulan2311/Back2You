@@ -5,6 +5,7 @@
 - Frontend: Netlify
 - Backend API: Render Web Service
 - Database: MongoDB Atlas
+- Image storage: Cloudinary
 
 ## Render backend setup
 
@@ -22,6 +23,10 @@
 - `JWT_EXPIRES_IN=7d`
 - `CLIENT_URL=https://your-netlify-site.netlify.app`
 - `CLIENT_URLS=https://your-netlify-site.netlify.app`
+- `CLOUDINARY_CLOUD_NAME=your-cloud-name`
+- `CLOUDINARY_API_KEY=your-api-key`
+- `CLOUDINARY_API_SECRET=your-api-secret`
+- `CLOUDINARY_FOLDER=back2you`
 
 ## Netlify frontend setup
 
@@ -43,15 +48,16 @@ window.BACK2YOU_API_BASE_URL = "https://your-render-service.onrender.com/api";
 - The frontend is deployed as static files from `frontend/`
 - The backend runs as a Render web service
 - MongoDB Atlas is the production database
-- Report images are URL-based in the current deployment-safe version
-- Direct file uploads are not used in production right now
+- Report images upload to Cloudinary when the Cloudinary env vars are set
+- Plain `imageUrl` values still work as a fallback for older clients
 
 ## Pre-deploy checklist
 
 - MongoDB Atlas cluster is reachable from the internet
-- Render environment variables are set
+- Render environment variables are set, including Cloudinary keys
 - `frontend/js/config.production.js` points to the Render backend
 - `npm run check` passes locally
 - Backend route `/api/health` returns success after deploy
 - Registration, login, lost item, found item, search, status, and dashboard flows are tested
+- Image upload works for both lost and found reports
 - Admin-only data access is verified

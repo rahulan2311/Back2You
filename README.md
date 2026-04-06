@@ -6,13 +6,14 @@ Recommended deployment:
 - `frontend/` on Netlify
 - `backend/` as a Render Web Service
 - MongoDB on Atlas
+- Cloudinary for permanent image storage
 
 ## Project Structure
 
 - `frontend/` - static pages and browser-side JavaScript
 - `backend/src/` - Express app, routes, controllers, models, and utilities
 - `backend/api/` - serverless API entry points for deployment platforms
-- `backend/uploads/` - uploaded files placeholder
+- `backend/uploads/` - legacy local uploads placeholder
 - `netlify/functions/` - optional Netlify function bridge
 - `netlify.toml` - Netlify build and redirect config
 - `DEPLOYMENT.md` - deployment notes
@@ -33,6 +34,17 @@ For a Netlify frontend with a Render backend:
 1. Copy `frontend/js/config.example.js` to `frontend/js/config.production.js`
 2. Set `window.BACK2YOU_API_BASE_URL` to your Render API URL
 3. Deploy `frontend/` to Netlify
+
+## Production Image Storage
+
+Set these backend env vars to enable permanent uploads through Cloudinary:
+
+- `CLOUDINARY_CLOUD_NAME`
+- `CLOUDINARY_API_KEY`
+- `CLOUDINARY_API_SECRET`
+- `CLOUDINARY_FOLDER`
+
+If those are not set, file uploads will fail and old-style `imageUrl` submissions remain the fallback path.
 
 ## Deployment Validation
 

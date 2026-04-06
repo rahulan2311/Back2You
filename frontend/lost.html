@@ -179,7 +179,10 @@ tailwind.config = { theme: { extend: { colors: { deep:"#020617", text:"#f5f7fb",
         <input id="lostDate" type="date" onclick="this.showPicker && this.showPicker()" class="report-input rounded-2xl border-white/10 bg-white/8 px-4 py-3.5 text-white focus:border-blueglow focus:ring-blueglow" required/>
         <input id="lostPhoneNumber" type="tel" inputmode="tel" class="report-input md:col-span-2 rounded-2xl border-white/10 bg-white/8 px-4 py-3.5 text-white placeholder:text-muted focus:border-blueglow focus:ring-blueglow" placeholder="Phone Number" required/>
         <textarea id="lostDescription" rows="5" class="report-textarea md:col-span-2 rounded-[1.5rem] border-white/10 bg-white/8 px-4 py-3.5 text-white placeholder:text-muted focus:border-blueglow focus:ring-blueglow" placeholder="Description" required></textarea>
-        <input id="lostImageUrl" type="url" class="report-input md:col-span-2 rounded-2xl border-white/10 bg-white/8 px-4 py-3.5 text-white placeholder:text-muted focus:border-blueglow focus:ring-blueglow" placeholder="Image URL (optional, use https://...)"/>
+        <div class="md:col-span-2">
+          <label for="lostImageFile" class="mb-2 block text-sm font-semibold text-white">Item Image (optional)</label>
+          <input id="lostImageFile" type="file" accept="image/*" class="report-input block w-full rounded-2xl border-white/10 bg-white/8 px-4 py-3.5 text-white file:mr-4 file:rounded-full file:border-0 file:bg-blueglow/20 file:px-4 file:py-2 file:font-semibold file:text-white focus:border-blueglow focus:ring-blueglow"/>
+        </div>
       </div>
       <div id="trackingMessage" class="report-feedback mt-5 hidden rounded-[1.25rem] border border-blueglow/25 bg-blueglow/10 px-4 py-3 text-sm text-white"></div>
       <div class="submit-row mt-5 sm:mt-6">
@@ -212,19 +215,21 @@ async function copyTrackingCode(code, button) {
 }
 document.getElementById("lostReportForm").addEventListener("submit", async function (event) {
   event.preventDefault();
-  const payload = {
-    itemName: document.getElementById("lostItemName").value.trim(),
-    category: document.getElementById("lostCategory").value.trim(),
-    eventLocation: document.getElementById("lostLocation").value.trim(),
-    eventDate: document.getElementById("lostDate").value,
-    contactPhone: document.getElementById("lostPhoneNumber").value.trim(),
-    description: document.getElementById("lostDescription").value.trim(),
-    imageUrl: document.getElementById("lostImageUrl").value.trim()
-  };
+  const payload = new FormData();
+  payload.append("itemName", document.getElementById("lostItemName").value.trim());
+  payload.append("category", document.getElementById("lostCategory").value.trim());
+  payload.append("eventLocation", document.getElementById("lostLocation").value.trim());
+  payload.append("eventDate", document.getElementById("lostDate").value);
+  payload.append("contactPhone", document.getElementById("lostPhoneNumber").value.trim());
+  payload.append("description", document.getElementById("lostDescription").value.trim());
+  const imageFile = document.getElementById("lostImageFile").files[0];
+  if (imageFile) {
+    payload.append("image", imageFile);
+  }
   try {
     const response = await Back2YouAPI.request("/items/lost", {
       method: "POST",
-      body: JSON.stringify(payload)
+      body: payload
     });
     const message = document.getElementById("trackingMessage");
     const trackingCode = response && response.data

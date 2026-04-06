@@ -75,6 +75,7 @@ tailwind.config = { theme: { extend: { colors: { deep:"#020617", text:"#f5f7fb",
         <div class="rounded-[1.2rem] border border-white/10 bg-white/5 p-4"><p class="text-sm text-muted">Reported Date</p><p id="resultDate" class="mt-2 text-xl font-bold text-white"></p></div>
         <div class="rounded-[1.2rem] border border-white/10 bg-white/5 p-4"><p class="text-sm text-muted">Location</p><p id="resultLocation" class="mt-2 text-xl font-bold text-white"></p></div>
         <div class="rounded-[1.2rem] border border-white/10 bg-white/5 p-4 sm:col-span-2"><p class="text-sm text-muted">Matched Item</p><p id="matchedItemCode" class="mt-2 text-xl font-bold text-white">No match yet</p></div>
+        <div id="matchedContactCard" class="hidden rounded-[1.2rem] border border-white/10 bg-white/5 p-4 sm:col-span-2"><p class="text-sm text-muted">Finder Contact Number</p><p id="matchedContactPhone" class="mt-2 text-xl font-bold text-white">Not available</p></div>
       </div>
       <p id="resultMessage" class="mt-5 text-sm leading-7 text-muted"></p>
     </div>
@@ -116,14 +117,21 @@ document.getElementById("checkStatusButton").addEventListener("click", async fun
   const code = document.getElementById("trackingCodeInput").value.trim().toUpperCase();
   const resultBox = document.getElementById("statusResult");
   const indicator = document.getElementById("statusIndicator");
+  const matchedContactCard = document.getElementById("matchedContactCard");
+  const matchedContactPhone = document.getElementById("matchedContactPhone");
 
   resultBox.classList.remove("hidden");
   indicator.className = "status-dot";
+  matchedContactCard.classList.add("hidden");
+  matchedContactPhone.textContent = "Not available";
 
   try {
     const response = await Back2YouAPI.request(`/items/status/${code}`);
     const result = response.data;
     const config = statusConfig[result.status] || statusConfig["still-searching"];
+    const matchedFinderPhone = result.matchedItem && result.matchedItem.reportType === "found"
+      ? result.matchedItem.contactPhone
+      : "";
 
     indicator.classList.add(config.indicator);
     document.getElementById("statusLabel").textContent = config.label;
@@ -135,6 +143,10 @@ document.getElementById("checkStatusButton").addEventListener("click", async fun
     document.getElementById("resultMessage").textContent = result.matchedItem
       ? `${config.message} Matched with ${result.matchedItem.trackingCode} (${result.matchedItem.itemName}).`
       : config.message;
+    if (matchedFinderPhone) {
+      matchedContactCard.classList.remove("hidden");
+      matchedContactPhone.textContent = matchedFinderPhone;
+    }
   } catch (error) {
     indicator.classList.add("status-red");
     document.getElementById("statusLabel").textContent = "Tracking code not found";

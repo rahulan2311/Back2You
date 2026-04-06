@@ -1,27 +1,19 @@
-const fs = require("fs");
-const path = require("path");
 const multer = require("multer");
 
-const uploadDirectory = path.join(__dirname, "..", "..", "uploads");
-
-if (!fs.existsSync(uploadDirectory)) {
-  fs.mkdirSync(uploadDirectory, { recursive: true });
-}
-
-const storage = multer.diskStorage({
-  destination(req, file, cb) {
-    cb(null, uploadDirectory);
-  },
-  filename(req, file, cb) {
-    const sanitizedName = file.originalname.replace(/\s+/g, "-").toLowerCase();
-    cb(null, `${Date.now()}-${sanitizedName}`);
-  }
-});
+const allowedMimeTypes = new Set(["image/jpeg", "image/png", "image/webp", "image/gif"]);
 
 const upload = multer({
-  storage,
+  storage: multer.memoryStorage(),
   limits: {
     fileSize: 5 * 1024 * 1024
+  },
+  fileFilter(req, file, cb) {
+    if (!allowedMimeTypes.has(file.mimetype)) {
+      cb(new Error("Only JPG, PNG, WEBP, and GIF image uploads are allowed"));
+      return;
+    }
+
+    cb(null, true);
   }
 });
 

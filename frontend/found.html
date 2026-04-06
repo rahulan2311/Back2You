@@ -182,7 +182,10 @@ tailwind.config = { theme: { extend: { colors: { deep:"#020617", text:"#f5f7fb",
         <input id="foundDate" type="date" onclick="this.showPicker && this.showPicker()" class="report-input rounded-2xl border-white/10 bg-white/8 px-4 py-3.5 text-white focus:border-violetglow focus:ring-violetglow" required/>
         <input id="foundPhoneNumber" type="tel" inputmode="tel" class="report-input md:col-span-2 rounded-2xl border-white/10 bg-white/8 px-4 py-3.5 text-white placeholder:text-muted focus:border-violetglow focus:ring-violetglow" placeholder="Phone Number" required/>
         <textarea id="foundDescription" rows="5" class="report-textarea md:col-span-2 rounded-[1.5rem] border-white/10 bg-white/8 px-4 py-3.5 text-white placeholder:text-muted focus:border-violetglow focus:ring-violetglow" placeholder="Description" required></textarea>
-        <input id="foundImageUrl" type="url" class="report-input md:col-span-2 rounded-2xl border-white/10 bg-white/8 px-4 py-3.5 text-white placeholder:text-muted focus:border-violetglow focus:ring-violetglow" placeholder="Image URL (optional, use https://...)"/>
+        <div class="md:col-span-2">
+          <label for="foundImageFile" class="mb-2 block text-sm font-semibold text-white">Item Image (optional)</label>
+          <input id="foundImageFile" type="file" accept="image/*" class="report-input block w-full rounded-2xl border-white/10 bg-white/8 px-4 py-3.5 text-white file:mr-4 file:rounded-full file:border-0 file:bg-violetglow/20 file:px-4 file:py-2 file:font-semibold file:text-white focus:border-violetglow focus:ring-violetglow"/>
+        </div>
       </div>
       <div id="foundTrackingMessage" class="report-feedback mt-5 hidden rounded-[1.25rem] border border-violetglow/25 bg-violetglow/10 px-4 py-3 text-sm text-white"></div>
       <div class="submit-row mt-6">
@@ -203,20 +206,22 @@ Back2YouAPI.requireAuth();
 document.getElementById("foundReportForm").addEventListener("submit", async function (event) {
   event.preventDefault();
 
-  const payload = {
-    itemName: document.getElementById("foundItemName").value.trim(),
-    category: document.getElementById("foundCategory").value.trim(),
-    eventLocation: document.getElementById("foundLocation").value.trim(),
-    eventDate: document.getElementById("foundDate").value,
-    contactPhone: document.getElementById("foundPhoneNumber").value.trim(),
-    description: document.getElementById("foundDescription").value.trim(),
-    imageUrl: document.getElementById("foundImageUrl").value.trim()
-  };
+  const payload = new FormData();
+  payload.append("itemName", document.getElementById("foundItemName").value.trim());
+  payload.append("category", document.getElementById("foundCategory").value.trim());
+  payload.append("eventLocation", document.getElementById("foundLocation").value.trim());
+  payload.append("eventDate", document.getElementById("foundDate").value);
+  payload.append("contactPhone", document.getElementById("foundPhoneNumber").value.trim());
+  payload.append("description", document.getElementById("foundDescription").value.trim());
+  const imageFile = document.getElementById("foundImageFile").files[0];
+  if (imageFile) {
+    payload.append("image", imageFile);
+  }
 
   try {
     const response = await Back2YouAPI.request("/items/found", {
       method: "POST",
-      body: JSON.stringify(payload)
+      body: payload
     });
 
     const message = document.getElementById("foundTrackingMessage");
@@ -230,6 +235,3 @@ document.getElementById("foundReportForm").addEventListener("submit", async func
 </script>
 </body>
 </html>
-
-
-

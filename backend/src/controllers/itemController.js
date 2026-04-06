@@ -1,3 +1,4 @@
+const crypto = require("crypto");
 const Item = require("../models/Item");
 const asyncHandler = require("../utils/asyncHandler");
 const generateTrackingCode = require("../utils/generateTrackingCode");
@@ -44,6 +45,69 @@ function normalizeImageUrl(value) {
   }
 }
 
+function isCloudinaryConfigured() {
+  return Boolean(
+    process.env.CLOUDINARY_CLOUD_NAME
+    && process.env.CLOUDINARY_API_KEY
+    && process.env.CLOUDINARY_API_SECRET
+  );
+}
+
+async function uploadImageToCloudinary(file, reportType) {
+  if (!isCloudinaryConfigured()) {
+    throw new Error("Cloudinary is not configured. Set CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET.");
+  }
+
+  const timestamp = Math.floor(Date.now() / 1000);
+  const folder = process.env.CLOUDINARY_FOLDER || "back2you";
+  const publicIdBase = String(file.originalname || "report-image")
+    .replace(/\.[^.]+$/, "")
+    .replace(/[^a-zA-Z0-9_-]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .toLowerCase() || "report-image";
+  const publicId = `${reportType}-${Date.now()}-${publicIdBase}`;
+  const signaturePayload = `folder=${folder}&public_id=${publicId}&timestamp=${timestamp}${process.env.CLOUDINARY_API_SECRET}`;
+  const signature = crypto.createHash("sha1").update(signaturePayload).digest("hex");
+  const formData = new FormData();
+  const imageBlob = new Blob([file.buffer], { type: file.mimetype });
+
+  formData.append("file", imageBlob, file.originalname || `${publicId}.jpg`);
+  formData.append("api_key", process.env.CLOUDINARY_API_KEY);
+  formData.append("timestamp", String(timestamp));
+  formData.append("folder", folder);
+  formData.append("public_id", publicId);
+  formData.append("signature", signature);
+
+  const response = await fetch(`https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload`, {
+    method: "POST",
+    body: formData
+  });
+
+  const result = await response.json();
+
+  if (!response.ok || !result.secure_url) {
+    const cloudinaryMessage = result && result.error && result.error.message
+      ? result.error.message
+      : "Unable to upload image to Cloudinary";
+    throw new Error(cloudinaryMessage);
+  }
+
+  return result.secure_url;
+}
+
+async function resolveImageUrl(req, reportType) {
+  if (req.file) {
+    return uploadImageToCloudinary(req.file, reportType);
+  }
+
+  const normalizedImageUrl = normalizeImageUrl(req.body.imageUrl);
+  if (req.body.imageUrl && !normalizedImageUrl) {
+    return null;
+  }
+
+  return normalizedImageUrl;
+}
+
 async function generateUniqueTrackingCode(prefix) {
   let trackingCode;
   let exists = true;
@@ -65,8 +129,7 @@ async function createItem(req, res, reportType) {
     eventDate,
     storageLocation,
     contactPhone,
-    tags,
-    imageUrl
+    tags
   } = req.body;
 
   if (!itemName || !category || !description || !eventLocation || !eventDate) {
@@ -74,8 +137,8 @@ async function createItem(req, res, reportType) {
     throw new Error("Item name, category, description, location, and date are required");
   }
 
-  const normalizedImageUrl = normalizeImageUrl(imageUrl);
-  if (imageUrl && !normalizedImageUrl) {
+  const resolvedImageUrl = await resolveImageUrl(req, reportType);
+  if (req.body.imageUrl && !resolvedImageUrl) {
     res.status(400);
     throw new Error("Image URL must be a valid http or https link");
   }
@@ -101,7 +164,7 @@ async function createItem(req, res, reportType) {
     contactPhone,
     status: initialStatus,
     reporterId: req.user._id,
-    imageUrl: normalizedImageUrl,
+    imageUrl: resolvedImageUrl,
     tags: normalizedTags,
     activityLog: [
       buildActivity(

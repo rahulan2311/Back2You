@@ -192,7 +192,7 @@ async function findPotentialMatch(item) {
 async function findByTrackingCode(trackingCode) {
   return ItemModel.findOne({ trackingCode })
     .populate("reporterId", "name email rollNumber")
-    .populate("matchedItemId", "trackingCode itemName status reportType eventLocation eventDate")
+    .populate("matchedItemId", "trackingCode itemName status reportType eventLocation eventDate contactPhone")
     .lean()
     .then((item) => {
       if (!item) {

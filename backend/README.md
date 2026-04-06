@@ -11,7 +11,7 @@ This backend is a `Node.js + Express + MongoDB` API for the Back2You lost-and-fo
 - Ownership claims workflow
 - Feedback submission
 - Dashboard summary endpoint
-- Optional image upload support through `multer`
+- Image upload support through `multer` and Cloudinary
 - Netlify Functions and Vercel-compatible serverless entry points
 
 ## Run Locally
@@ -28,6 +28,17 @@ npm install
 ```bash
 npm run dev
 ```
+
+## Image Upload Configuration
+
+Set these environment variables to store uploaded images permanently in Cloudinary:
+
+- `CLOUDINARY_CLOUD_NAME`
+- `CLOUDINARY_API_KEY`
+- `CLOUDINARY_API_SECRET`
+- `CLOUDINARY_FOLDER`
+
+Older clients can still submit a direct `imageUrl`, but file uploads depend on the Cloudinary keys being present.
 
 ## Main routes
 
