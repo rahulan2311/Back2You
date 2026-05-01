@@ -34,7 +34,7 @@ tailwind.config = { theme: { extend: { colors: { deep:"#020617", text:"#f5f7fb",
   .match-chip { display:inline-flex; align-items:center; border-radius:999px; border:1px solid rgba(79,124,255,.18); background:rgba(79,124,255,.12); padding:.35rem .75rem; font-size:.78rem; font-weight:700; color:#dbe7ff; }
   .match-action-btn { display:inline-flex; align-items:center; justify-content:center; border-radius:999px; border:1px solid rgba(79,124,255,.2); background:rgba(79,124,255,.14); padding:.65rem 1rem; font-size:.88rem; font-weight:700; color:#fff; transition:transform .2s ease, background-color .2s ease, border-color .2s ease; }
   .match-action-btn:hover { transform:translateY(-1px); background:rgba(79,124,255,.22); border-color:rgba(79,124,255,.34); }
-  .match-photo { width:100%; height:14rem; object-fit:cover; border-radius:1rem; border:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.04); }
+  .match-photo { width:100%; height:100%; min-height:16rem; object-fit:cover; border-radius:1.1rem; border:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.04); }
   @media (max-width: 640px) { .back-pill { height: 2.75rem; width: 2.75rem; } }
 </style>
 </head>
@@ -89,22 +89,32 @@ tailwind.config = { theme: { extend: { colors: { deep:"#020617", text:"#f5f7fb",
         </div>
         <div id="matchedItemViewer" class="hidden rounded-[1.2rem] border border-white/10 bg-white/5 p-4 sm:col-span-2">
           <div class="flex items-center justify-between gap-3">
-            <div>
-              <p class="text-sm text-muted">Found Item Details</p>
-              <p id="viewerItemName" class="mt-2 text-xl font-bold text-white">-</p>
-            </div>
+            <p class="text-sm text-muted">Found Item Details</p>
             <span id="matchViewerCounter" class="rounded-full border border-white/10 bg-white/8 px-3 py-1 text-xs font-bold text-white">Selected</span>
           </div>
-          <img id="viewerPhoto" class="match-photo mt-4 hidden" alt="Matched found item photo"/>
-          <div class="mt-4 grid gap-4 sm:grid-cols-2">
-            <div class="rounded-[1rem] border border-white/8 bg-white/5 p-3"><p class="text-xs uppercase tracking-[0.18em] text-text/50">Category</p><p id="viewerCategory" class="mt-2 text-base font-semibold text-white">-</p></div>
-            <div class="rounded-[1rem] border border-white/8 bg-white/5 p-3"><p class="text-xs uppercase tracking-[0.18em] text-text/50">Found Date</p><p id="viewerDate" class="mt-2 text-base font-semibold text-white">-</p></div>
-            <div class="rounded-[1rem] border border-white/8 bg-white/5 p-3 sm:col-span-2"><p class="text-xs uppercase tracking-[0.18em] text-text/50">Finder Mobile Number</p><p id="viewerPhone" class="mt-2 text-base font-semibold text-white">Not available</p></div>
-            <div class="rounded-[1rem] border border-white/8 bg-white/5 p-3 sm:col-span-2"><p class="text-xs uppercase tracking-[0.18em] text-text/50">Description</p><p id="viewerDescription" class="mt-2 text-base font-semibold text-white">-</p></div>
-            <div class="rounded-[1rem] border border-white/8 bg-white/5 p-3 sm:col-span-2"><p class="text-xs uppercase tracking-[0.18em] text-text/50">Why It Matched</p><div id="viewerMatchReasons" class="mt-3 flex flex-wrap gap-2"></div></div>
+          <div class="mt-4 grid gap-4 lg:grid-cols-[0.88fr_1.12fr]">
+            <div class="rounded-[1.2rem] border border-white/8 bg-white/5 p-3">
+              <img id="viewerPhoto" class="match-photo hidden" alt="Matched found item photo"/>
+              <div id="viewerPhotoFallback" class="flex min-h-[16rem] items-center justify-center rounded-[1.1rem] border border-dashed border-white/12 bg-white/4 text-sm font-semibold text-muted">No photo available</div>
+            </div>
+            <div class="rounded-[1.2rem] border border-white/8 bg-white/5 p-4">
+              <p class="text-xs uppercase tracking-[0.18em] text-text/50">Item Name</p>
+              <p id="viewerItemName" class="mt-2 text-2xl font-bold text-white">-</p>
+              <p class="mt-5 text-xs uppercase tracking-[0.18em] text-text/50">Category</p>
+              <p id="viewerCategory" class="mt-2 text-base font-semibold text-white">-</p>
+              <p class="mt-5 text-xs uppercase tracking-[0.18em] text-text/50">Found Date</p>
+              <p id="viewerDate" class="mt-2 text-base font-semibold text-white">-</p>
+              <p class="mt-5 text-xs uppercase tracking-[0.18em] text-text/50">Description</p>
+              <p id="viewerDescription" class="mt-2 text-base font-semibold leading-7 text-white">-</p>
+              <p class="mt-5 text-xs uppercase tracking-[0.18em] text-text/50">Finder Mobile Number</p>
+              <p id="viewerPhone" class="mt-2 text-base font-semibold text-white">Not available</p>
+              <div class="mt-5">
+                <p class="text-xs uppercase tracking-[0.18em] text-text/50">Why It Matched</p>
+                <div id="viewerMatchReasons" class="mt-3 flex flex-wrap gap-2"></div>
+              </div>
+            </div>
           </div>
         </div>
-        <div id="matchedContactCard" class="hidden rounded-[1.2rem] border border-white/10 bg-white/5 p-4 sm:col-span-2"><p class="text-sm text-muted">Finder Contact Number</p><p id="matchedContactPhone" class="mt-2 text-xl font-bold text-white">Not available</p></div>
       </div>
       <p id="resultMessage" class="mt-5 text-sm leading-7 text-muted"></p>
     </div>
@@ -191,17 +201,15 @@ function renderMatchedItems(matches) {
 
 function setMatchViewer(match, selectedIndex, totalCount) {
   const viewer = document.getElementById("matchedItemViewer");
-  const matchedContactCard = document.getElementById("matchedContactCard");
-  const matchedContactPhone = document.getElementById("matchedContactPhone");
   const counter = document.getElementById("matchViewerCounter");
   const photo = document.getElementById("viewerPhoto");
+  const photoFallback = document.getElementById("viewerPhotoFallback");
 
   if (!match) {
     viewer.classList.add("hidden");
-    matchedContactCard.classList.add("hidden");
-    matchedContactPhone.textContent = "Not available";
     photo.classList.add("hidden");
     photo.removeAttribute("src");
+    photoFallback.classList.remove("hidden");
     return;
   }
 
@@ -216,17 +224,11 @@ function setMatchViewer(match, selectedIndex, totalCount) {
   if (match.imageUrl) {
     photo.src = match.imageUrl;
     photo.classList.remove("hidden");
+    photoFallback.classList.add("hidden");
   } else {
     photo.classList.add("hidden");
     photo.removeAttribute("src");
-  }
-
-  if (match.contactPhone) {
-    matchedContactCard.classList.remove("hidden");
-    matchedContactPhone.textContent = match.contactPhone;
-  } else {
-    matchedContactCard.classList.add("hidden");
-    matchedContactPhone.textContent = "Not available";
+    photoFallback.classList.remove("hidden");
   }
 }
 
@@ -283,8 +285,6 @@ document.getElementById("checkStatusButton").addEventListener("click", async fun
   const code = document.getElementById("trackingCodeInput").value.trim().toUpperCase();
   const resultBox = document.getElementById("statusResult");
   const indicator = document.getElementById("statusIndicator");
-  const matchedContactCard = document.getElementById("matchedContactCard");
-  const matchedContactPhone = document.getElementById("matchedContactPhone");
 
   resultBox.classList.remove("hidden");
   indicator.className = "status-dot";
@@ -310,7 +310,7 @@ document.getElementById("checkStatusButton").addEventListener("click", async fun
         : config.message;
     currentMatches = allMatches;
     renderMatchedItems(allMatches);
-    setMatchViewer(allMatches[0] || null, 0, allMatches.length);
+    setMatchViewer(null, 0, allMatches.length);
   } catch (error) {
     indicator.classList.add("status-red");
     document.getElementById("statusLabel").textContent = "Tracking code not found";
