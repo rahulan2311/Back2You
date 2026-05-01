@@ -125,30 +125,69 @@ function countSharedWords(left, right) {
   return count;
 }
 
-function scorePotentialMatch(sourceItem, candidateItem) {
-  let score = 0;
-
-  if (sourceItem.category.trim().toLowerCase() === candidateItem.category.trim().toLowerCase()) {
-    score += 4;
-  }
-
-  score += Math.min(countSharedWords(sourceItem.itemName, candidateItem.itemName), 3) * 3;
-  score += Math.min(countSharedWords(sourceItem.description, candidateItem.description), 4) * 2;
-  score += Math.min(countSharedWords(sourceItem.eventLocation, candidateItem.eventLocation), 2) * 2;
-
+function getDayDifference(sourceItem, candidateItem) {
   const sourceDate = new Date(sourceItem.eventDate).getTime();
   const candidateDate = new Date(candidateItem.eventDate).getTime();
-  const dayDifference = Math.abs(sourceDate - candidateDate) / (1000 * 60 * 60 * 24);
 
-  if (dayDifference <= 1) {
+  if (Number.isNaN(sourceDate) || Number.isNaN(candidateDate)) {
+    return null;
+  }
+
+  return Math.abs(sourceDate - candidateDate) / (1000 * 60 * 60 * 24);
+}
+
+function analyzePotentialMatch(sourceItem, candidateItem) {
+  const categoryMatches = sourceItem.category.trim().toLowerCase() === candidateItem.category.trim().toLowerCase();
+  const sharedNameWords = countSharedWords(sourceItem.itemName, candidateItem.itemName);
+  const sharedDescriptionWords = countSharedWords(sourceItem.description, candidateItem.description);
+  const sharedLocationWords = countSharedWords(sourceItem.eventLocation, candidateItem.eventLocation);
+  const dayDifference = getDayDifference(sourceItem, candidateItem);
+  const reasons = [];
+  let score = 0;
+
+  if (categoryMatches) {
+    score += 4;
+    reasons.push("same category");
+  }
+
+  if (sharedNameWords > 0) {
+    score += Math.min(sharedNameWords, 3) * 3;
+    reasons.push("similar item name");
+  }
+
+  if (sharedDescriptionWords > 0) {
+    score += Math.min(sharedDescriptionWords, 4) * 2;
+    reasons.push("similar description");
+  }
+
+  if (sharedLocationWords > 0) {
+    score += Math.min(sharedLocationWords, 2) * 2;
+    reasons.push("similar location");
+  }
+
+  if (dayDifference !== null && dayDifference <= 1) {
     score += 3;
-  } else if (dayDifference <= 3) {
+    reasons.push("same day");
+  } else if (dayDifference !== null && dayDifference <= 3) {
     score += 2;
-  } else if (dayDifference <= 7) {
+    reasons.push("nearby date");
+  } else if (dayDifference !== null && dayDifference <= 7) {
     score += 1;
   }
 
-  return score;
+  return {
+    score,
+    reasons,
+    categoryMatches,
+    sharedNameWords,
+    sharedDescriptionWords,
+    sharedLocationWords,
+    dayDifference
+  };
+}
+
+function scorePotentialMatch(sourceItem, candidateItem) {
+  return analyzePotentialMatch(sourceItem, candidateItem).score;
 }
 
 async function createItem(item) {
@@ -163,46 +202,100 @@ async function existsByTrackingCode(trackingCode) {
   return ItemModel.exists({ trackingCode });
 }
 
-async function findPotentialMatch(item) {
+async function listPotentialMatches(item, options = {}) {
   const candidateReportType = item.reportType === "lost" ? "found" : "lost";
+  const {
+    includeMatchedItems = false,
+    limit = 5,
+    minScore = 3,
+    requireNameOrCategory = false
+  } = options;
   const candidates = await ItemModel.find({
     reportType: candidateReportType,
-    status: { $in: ["reported", "still-searching", "found"] },
-    matchedItemId: { $exists: false },
-    category: item.category
+    status: { $in: ["reported", "still-searching", "found", "claimed"] }
   })
     .sort({ createdAt: -1 })
-    .limit(25)
+    .limit(includeMatchedItems ? 50 : 25)
     .lean();
 
-  let bestMatch = null;
-  let bestScore = 0;
+  const currentItemId = String(item._id);
+  const rankedMatches = [];
 
   for (const candidate of candidates) {
-    const score = scorePotentialMatch(item, candidate);
-    if (score > bestScore) {
-      bestScore = score;
-      bestMatch = candidate;
+    const candidateMatchedId = candidate.matchedItemId ? String(candidate.matchedItemId) : null;
+
+    if (!includeMatchedItems && candidateMatchedId) {
+      continue;
     }
+
+    if (includeMatchedItems && candidateMatchedId && candidateMatchedId !== currentItemId) {
+      continue;
+    }
+
+    const analysis = analyzePotentialMatch(item, candidate);
+    if (requireNameOrCategory && !(analysis.categoryMatches || analysis.sharedNameWords > 0)) {
+      continue;
+    }
+
+    if (analysis.score < minScore) {
+      continue;
+    }
+
+    rankedMatches.push({
+      ...candidate,
+      matchScore: analysis.score,
+      matchReasons: analysis.reasons,
+      sharedNameWords: analysis.sharedNameWords,
+      sharedDescriptionWords: analysis.sharedDescriptionWords,
+      sharedLocationWords: analysis.sharedLocationWords,
+      dayDifference: analysis.dayDifference
+    });
   }
 
-  return bestScore >= 8 ? bestMatch : null;
+  return rankedMatches
+    .sort((left, right) => right.matchScore - left.matchScore || new Date(right.createdAt) - new Date(left.createdAt))
+    .slice(0, limit);
+}
+
+async function findPotentialMatch(item) {
+  const matches = await listPotentialMatches(item, {
+    includeMatchedItems: false,
+    limit: 1,
+    minScore: 8
+  });
+
+  return matches[0] || null;
 }
 
 async function findByTrackingCode(trackingCode) {
-  return ItemModel.findOne({ trackingCode })
+  const item = await ItemModel.findOne({ trackingCode })
     .populate("reporterId", "name email rollNumber")
-    .populate("matchedItemId", "trackingCode itemName status reportType eventLocation eventDate contactPhone")
-    .lean()
-    .then((item) => {
-      if (!item) {
-        return null;
-      }
+    .populate("matchedItemId", "trackingCode itemName category status reportType eventLocation eventDate contactPhone imageUrl")
+    .lean();
 
-      item.reporter = item.reporterId || null;
-      item.matchedItem = item.matchedItemId || null;
-      return item;
+  if (!item) {
+    return null;
+  }
+
+  item.reporter = item.reporterId || null;
+  item.matchedItem = item.matchedItemId || null;
+
+  if (item.reportType === "lost") {
+    const possibleMatches = await listPotentialMatches(item, {
+      includeMatchedItems: true,
+      limit: 20,
+      minScore: 0,
+      requireNameOrCategory: true
     });
+
+    item.possibleMatches = item.matchedItemId
+      ? possibleMatches.filter((candidate) => String(candidate._id) !== String(item.matchedItemId._id || item.matchedItemId))
+      : possibleMatches;
+  } else {
+    item.possibleMatches = [];
+  }
+
+  return item;
 }
 
 async function searchItems({ q, category, reportType, status }) {
@@ -275,6 +368,7 @@ module.exports = {
   findById,
   existsByTrackingCode,
   findPotentialMatch,
+  listPotentialMatches,
   findByTrackingCode,
   searchItems,
   findByReporterId,
