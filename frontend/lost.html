@@ -240,6 +240,9 @@ document.getElementById("lostReportForm").addEventListener("submit", async funct
     }
     message.innerHTML = [
       "<p>Tracking code generated. Use this code in Status Tracking to check your item progress.</p>",
+      response.data.autoMatched && response.data.matchedTrackingCode
+        ? `<p class="mt-2">A likely found-item match was detected immediately: <strong>${trackingCode}</strong> is linked with <strong>${response.data.matchedTrackingCode}</strong>.</p>`
+        : "",
       '<div class="tracking-code-box">',
       '  <span class="tracking-code-value">' + trackingCode + '</span>',
       '  <button type="button" class="tracking-copy-btn">Copy Code</button>',

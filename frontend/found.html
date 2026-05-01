@@ -225,7 +225,9 @@ document.getElementById("foundReportForm").addEventListener("submit", async func
     });
 
     const message = document.getElementById("foundTrackingMessage");
-    message.textContent = `Found item saved with tracking code ${response.data.trackingCode}.`;
+    message.textContent = response.data.autoMatched && response.data.matchedTrackingCode
+      ? `Found item saved with tracking code ${response.data.trackingCode}. It also matched lost report ${response.data.matchedTrackingCode}.`
+      : `Found item saved with tracking code ${response.data.trackingCode}.`;
     message.classList.remove("hidden");
     this.reset();
   } catch (error) {
