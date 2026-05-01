@@ -32,9 +32,9 @@ tailwind.config = { theme: { extend: { colors: { deep:"#020617", text:"#f5f7fb",
   .status-yellow { background:#facc15; box-shadow:0 0 18px rgba(250,204,21,.35); }
   .status-green { background:#22c55e; box-shadow:0 0 18px rgba(34,197,94,.35); }
   .match-chip { display:inline-flex; align-items:center; border-radius:999px; border:1px solid rgba(79,124,255,.18); background:rgba(79,124,255,.12); padding:.35rem .75rem; font-size:.78rem; font-weight:700; color:#dbe7ff; }
-  .match-nav-btn { display:inline-flex; align-items:center; justify-content:center; min-width:7rem; border-radius:999px; border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.06); padding:.7rem 1rem; font-size:.9rem; font-weight:700; color:#fff; transition:transform .2s ease, background-color .2s ease, border-color .2s ease; }
-  .match-nav-btn:hover:not(:disabled) { transform:translateY(-1px); background:rgba(255,255,255,.1); border-color:rgba(255,255,255,.2); }
-  .match-nav-btn:disabled { opacity:.4; cursor:not-allowed; }
+  .match-action-btn { display:inline-flex; align-items:center; justify-content:center; border-radius:999px; border:1px solid rgba(79,124,255,.2); background:rgba(79,124,255,.14); padding:.65rem 1rem; font-size:.88rem; font-weight:700; color:#fff; transition:transform .2s ease, background-color .2s ease, border-color .2s ease; }
+  .match-action-btn:hover { transform:translateY(-1px); background:rgba(79,124,255,.22); border-color:rgba(79,124,255,.34); }
+  .match-photo { width:100%; height:14rem; object-fit:cover; border-radius:1rem; border:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.04); }
   @media (max-width: 640px) { .back-pill { height: 2.75rem; width: 2.75rem; } }
 </style>
 </head>
@@ -78,23 +78,28 @@ tailwind.config = { theme: { extend: { colors: { deep:"#020617", text:"#f5f7fb",
         <div class="rounded-[1.2rem] border border-white/10 bg-white/5 p-4"><p class="text-sm text-muted">Item Name</p><p id="resultItem" class="mt-2 text-xl font-bold text-white"></p></div>
         <div class="rounded-[1.2rem] border border-white/10 bg-white/5 p-4"><p class="text-sm text-muted">Reported Date</p><p id="resultDate" class="mt-2 text-xl font-bold text-white"></p></div>
         <div class="rounded-[1.2rem] border border-white/10 bg-white/5 p-4"><p class="text-sm text-muted">Location</p><p id="resultLocation" class="mt-2 text-xl font-bold text-white"></p></div>
-        <div class="rounded-[1.2rem] border border-white/10 bg-white/5 p-4 sm:col-span-2"><p class="text-sm text-muted">Matched Item</p><p id="matchedItemCode" class="mt-2 text-xl font-bold text-white">No match yet</p></div>
-        <div id="matchedItemViewer" class="hidden rounded-[1.2rem] border border-white/10 bg-white/5 p-4 sm:col-span-2">
-          <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <p class="text-sm text-muted">Matched Found Item Details</p>
-              <p id="matchViewerCounter" class="mt-2 text-base font-bold text-white">Viewing 1 of 1</p>
-            </div>
-            <div class="flex gap-2">
-              <button id="prevMatchButton" type="button" class="match-nav-btn">Previous</button>
-              <button id="nextMatchButton" type="button" class="match-nav-btn">Next</button>
-            </div>
+        <div class="rounded-[1.2rem] border border-white/10 bg-white/5 p-4 sm:col-span-2">
+          <div class="flex items-center justify-between gap-3">
+            <p class="text-sm text-muted">Matched Items</p>
+            <span id="matchedItemsCount" class="rounded-full border border-white/10 bg-white/8 px-3 py-1 text-xs font-bold text-white">0 items</span>
           </div>
+          <div id="matchedItemCode" class="mt-3 grid gap-3">
+            <p class="text-base font-semibold text-white">No match yet</p>
+          </div>
+        </div>
+        <div id="matchedItemViewer" class="hidden rounded-[1.2rem] border border-white/10 bg-white/5 p-4 sm:col-span-2">
+          <div class="flex items-center justify-between gap-3">
+            <div>
+              <p class="text-sm text-muted">Found Item Details</p>
+              <p id="viewerItemName" class="mt-2 text-xl font-bold text-white">-</p>
+            </div>
+            <span id="matchViewerCounter" class="rounded-full border border-white/10 bg-white/8 px-3 py-1 text-xs font-bold text-white">Selected</span>
+          </div>
+          <img id="viewerPhoto" class="match-photo mt-4 hidden" alt="Matched found item photo"/>
           <div class="mt-4 grid gap-4 sm:grid-cols-2">
-            <div class="rounded-[1rem] border border-white/8 bg-white/5 p-3"><p class="text-xs uppercase tracking-[0.18em] text-text/50">Item Name</p><p id="viewerItemName" class="mt-2 text-base font-semibold text-white">-</p></div>
             <div class="rounded-[1rem] border border-white/8 bg-white/5 p-3"><p class="text-xs uppercase tracking-[0.18em] text-text/50">Category</p><p id="viewerCategory" class="mt-2 text-base font-semibold text-white">-</p></div>
-            <div class="rounded-[1rem] border border-white/8 bg-white/5 p-3"><p class="text-xs uppercase tracking-[0.18em] text-text/50">Found Location</p><p id="viewerLocation" class="mt-2 text-base font-semibold text-white">-</p></div>
             <div class="rounded-[1rem] border border-white/8 bg-white/5 p-3"><p class="text-xs uppercase tracking-[0.18em] text-text/50">Found Date</p><p id="viewerDate" class="mt-2 text-base font-semibold text-white">-</p></div>
+            <div class="rounded-[1rem] border border-white/8 bg-white/5 p-3 sm:col-span-2"><p class="text-xs uppercase tracking-[0.18em] text-text/50">Finder Mobile Number</p><p id="viewerPhone" class="mt-2 text-base font-semibold text-white">Not available</p></div>
             <div class="rounded-[1rem] border border-white/8 bg-white/5 p-3 sm:col-span-2"><p class="text-xs uppercase tracking-[0.18em] text-text/50">Description</p><p id="viewerDescription" class="mt-2 text-base font-semibold text-white">-</p></div>
             <div class="rounded-[1rem] border border-white/8 bg-white/5 p-3 sm:col-span-2"><p class="text-xs uppercase tracking-[0.18em] text-text/50">Why It Matched</p><div id="viewerMatchReasons" class="mt-3 flex flex-wrap gap-2"></div></div>
           </div>
@@ -102,16 +107,6 @@ tailwind.config = { theme: { extend: { colors: { deep:"#020617", text:"#f5f7fb",
         <div id="matchedContactCard" class="hidden rounded-[1.2rem] border border-white/10 bg-white/5 p-4 sm:col-span-2"><p class="text-sm text-muted">Finder Contact Number</p><p id="matchedContactPhone" class="mt-2 text-xl font-bold text-white">Not available</p></div>
       </div>
       <p id="resultMessage" class="mt-5 text-sm leading-7 text-muted"></p>
-      <div id="possibleMatchesSection" class="mt-6 hidden">
-        <div class="flex items-center justify-between gap-3">
-          <div>
-            <p class="text-xs uppercase tracking-[0.22em] text-blueglow">Possible Matches</p>
-            <h2 class="mt-2 text-xl font-bold text-white">Found Items That Look Similar</h2>
-          </div>
-          <span id="possibleMatchesCount" class="rounded-full border border-white/10 bg-white/8 px-3 py-1 text-xs font-bold text-white">0 items</span>
-        </div>
-        <div id="possibleMatchesList" class="mt-4 grid gap-4"></div>
-      </div>
     </div>
   </section>
 </main>
@@ -120,7 +115,6 @@ tailwind.config = { theme: { extend: { colors: { deep:"#020617", text:"#f5f7fb",
 <script src="js/app.js"></script>
 <script>
 let currentMatches = [];
-let currentMatchIndex = 0;
 
 const statusConfig = {
   "reported": {
@@ -169,79 +163,63 @@ function formatMatchReasons(reasons) {
     .join("");
 }
 
-function renderPossibleMatches(matches) {
-  const section = document.getElementById("possibleMatchesSection");
-  const count = document.getElementById("possibleMatchesCount");
-  const list = document.getElementById("possibleMatchesList");
+function renderMatchedItems(matches) {
+  const list = document.getElementById("matchedItemCode");
+  const count = document.getElementById("matchedItemsCount");
 
   if (!Array.isArray(matches) || !matches.length) {
-    section.classList.add("hidden");
     count.textContent = "0 items";
-    list.innerHTML = "";
+    list.innerHTML = '<p class="text-base font-semibold text-white">No match yet</p>';
     return;
   }
 
   count.textContent = `${matches.length} item${matches.length === 1 ? "" : "s"}`;
   list.innerHTML = matches.map((match) => `
-    <article class="rounded-[1.3rem] border border-white/10 bg-white/5 p-4 sm:p-5">
-      <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+    <article class="rounded-[1.15rem] border border-white/10 bg-white/5 p-4">
+      <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <p class="text-xs uppercase tracking-[0.22em] text-text/50">${escapeHtml(match.trackingCode || "Found report")}</p>
-          <h3 class="mt-2 text-xl font-bold text-white">${escapeHtml(match.itemName || "Found Item")}</h3>
-          <p class="mt-2 text-sm text-muted">${escapeHtml(match.category || "Uncategorized")} at ${escapeHtml(match.eventLocation || "Unknown location")}</p>
+          <h3 class="mt-2 text-lg font-bold text-white">${escapeHtml(match.itemName || "Found Item")}</h3>
         </div>
-        <div class="rounded-full border border-blueglow/25 bg-blueglow/10 px-3 py-1 text-sm font-bold text-blue-100">
-          Match Score ${escapeHtml(match.matchScore || 0)}
-        </div>
-      </div>
-      <div class="mt-4 flex flex-wrap gap-2">${formatMatchReasons(match.matchReasons)}</div>
-      <div class="mt-4 grid gap-3 sm:grid-cols-2">
-        <div class="rounded-[1rem] border border-white/8 bg-white/5 p-3">
-          <p class="text-xs uppercase tracking-[0.18em] text-text/50">Found Date</p>
-          <p class="mt-2 text-base font-semibold text-white">${match.eventDate ? escapeHtml(new Date(match.eventDate).toLocaleDateString()) : "-"}</p>
-        </div>
-        <div class="rounded-[1rem] border border-white/8 bg-white/5 p-3">
-          <p class="text-xs uppercase tracking-[0.18em] text-text/50">Finder Contact</p>
-          <p class="mt-2 text-base font-semibold text-white">${escapeHtml(match.contactPhone || "Not available")}</p>
-        </div>
+        <button type="button" class="match-action-btn" data-match-index="${escapeHtml(currentMatches.indexOf(match))}">
+          View Details
+        </button>
       </div>
     </article>
   `).join("");
-  section.classList.remove("hidden");
 }
 
-function setMatchViewer(matches, startIndex) {
+function setMatchViewer(match, selectedIndex, totalCount) {
   const viewer = document.getElementById("matchedItemViewer");
   const matchedContactCard = document.getElementById("matchedContactCard");
   const matchedContactPhone = document.getElementById("matchedContactPhone");
-  const matchedItemCode = document.getElementById("matchedItemCode");
   const counter = document.getElementById("matchViewerCounter");
-  const prevButton = document.getElementById("prevMatchButton");
-  const nextButton = document.getElementById("nextMatchButton");
+  const photo = document.getElementById("viewerPhoto");
 
-  currentMatches = Array.isArray(matches) ? matches : [];
-  currentMatchIndex = currentMatches.length ? Math.min(Math.max(startIndex || 0, 0), currentMatches.length - 1) : 0;
-
-  if (!currentMatches.length) {
+  if (!match) {
     viewer.classList.add("hidden");
     matchedContactCard.classList.add("hidden");
     matchedContactPhone.textContent = "Not available";
-    matchedItemCode.textContent = "No match yet";
+    photo.classList.add("hidden");
+    photo.removeAttribute("src");
     return;
   }
 
-  const match = currentMatches[currentMatchIndex];
   viewer.classList.remove("hidden");
-  counter.textContent = `Viewing ${currentMatchIndex + 1} of ${currentMatches.length}`;
-  prevButton.disabled = currentMatchIndex === 0;
-  nextButton.disabled = currentMatchIndex === currentMatches.length - 1;
-  matchedItemCode.textContent = match.trackingCode || "Found report";
+  counter.textContent = `Viewing ${selectedIndex + 1} of ${totalCount}`;
   document.getElementById("viewerItemName").textContent = match.itemName || "-";
   document.getElementById("viewerCategory").textContent = match.category || "-";
-  document.getElementById("viewerLocation").textContent = match.eventLocation || "-";
   document.getElementById("viewerDate").textContent = match.eventDate ? new Date(match.eventDate).toLocaleDateString() : "-";
+  document.getElementById("viewerPhone").textContent = match.contactPhone || "Not available";
   document.getElementById("viewerDescription").textContent = match.description || "No description";
   document.getElementById("viewerMatchReasons").innerHTML = formatMatchReasons(match.matchReasons);
+  if (match.imageUrl) {
+    photo.src = match.imageUrl;
+    photo.classList.remove("hidden");
+  } else {
+    photo.classList.add("hidden");
+    photo.removeAttribute("src");
+  }
 
   if (match.contactPhone) {
     matchedContactCard.classList.remove("hidden");
@@ -279,16 +257,26 @@ function collectAllMatches(result) {
   return allMatches;
 }
 
-document.getElementById("prevMatchButton").addEventListener("click", function () {
-  if (currentMatchIndex > 0) {
-    setMatchViewer(currentMatches, currentMatchIndex - 1);
+function getEffectiveStatus(result, allMatches) {
+  if (result.status === "claimed" || result.status === "returned") {
+    return result.status;
   }
-});
 
-document.getElementById("nextMatchButton").addEventListener("click", function () {
-  if (currentMatchIndex < currentMatches.length - 1) {
-    setMatchViewer(currentMatches, currentMatchIndex + 1);
+  return allMatches.length ? "found" : "still-searching";
+}
+
+document.getElementById("matchedItemCode").addEventListener("click", function (event) {
+  const button = event.target.closest("[data-match-index]");
+  if (!button) {
+    return;
   }
+
+  const matchIndex = Number(button.getAttribute("data-match-index"));
+  if (!Number.isInteger(matchIndex) || !currentMatches[matchIndex]) {
+    return;
+  }
+
+  setMatchViewer(currentMatches[matchIndex], matchIndex, currentMatches.length);
 });
 
 document.getElementById("checkStatusButton").addEventListener("click", async function () {
@@ -300,14 +288,16 @@ document.getElementById("checkStatusButton").addEventListener("click", async fun
 
   resultBox.classList.remove("hidden");
   indicator.className = "status-dot";
-  setMatchViewer([], 0);
-  renderPossibleMatches([]);
+  currentMatches = [];
+  setMatchViewer(null, 0, 0);
+  renderMatchedItems([]);
 
   try {
     const response = await Back2YouAPI.request(`/items/status/${code}`);
     const result = response.data;
-    const config = statusConfig[result.status] || statusConfig["still-searching"];
     const allMatches = collectAllMatches(result);
+    const effectiveStatus = getEffectiveStatus(result, allMatches);
+    const config = statusConfig[effectiveStatus] || statusConfig["still-searching"];
 
     indicator.classList.add(config.indicator);
     document.getElementById("statusLabel").textContent = config.label;
@@ -318,8 +308,9 @@ document.getElementById("checkStatusButton").addEventListener("click", async fun
     document.getElementById("resultMessage").textContent = allMatches.length
       ? `${config.message} We found ${allMatches.length} matching found item${allMatches.length === 1 ? "" : "s"} by item name or category. Review them one by one and contact the finder if one belongs to you.`
         : config.message;
-    setMatchViewer(allMatches, 0);
-    renderPossibleMatches(result.possibleMatches);
+    currentMatches = allMatches;
+    renderMatchedItems(allMatches);
+    setMatchViewer(allMatches[0] || null, 0, allMatches.length);
   } catch (error) {
     indicator.classList.add("status-red");
     document.getElementById("statusLabel").textContent = "Tracking code not found";
@@ -327,10 +318,10 @@ document.getElementById("checkStatusButton").addEventListener("click", async fun
     document.getElementById("resultItem").textContent = "-";
     document.getElementById("resultDate").textContent = "-";
     document.getElementById("resultLocation").textContent = "-";
-    document.getElementById("matchedItemCode").textContent = "No match yet";
     document.getElementById("resultMessage").textContent = error.message || "No report matches this code. Check the number and try again.";
-    setMatchViewer([], 0);
-    renderPossibleMatches([]);
+    currentMatches = [];
+    setMatchViewer(null, 0, 0);
+    renderMatchedItems([]);
   }
 });
 

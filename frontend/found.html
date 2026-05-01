@@ -18,9 +18,9 @@ tailwind.config = { theme: { extend: { colors: { deep:"#020617", text:"#f5f7fb",
   .glass { background: rgba(18,22,50,.7); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border: 1px solid rgba(255,255,255,.08); }
   .form-shell { width: 100%; max-width: 44rem; margin-inline: auto; }
   .report-grid { display: grid; gap: .85rem; }
-  .report-input { min-height: 3.4rem; width: 100%; font-size: 1rem; color: #111827 !important; background: rgba(255,255,255,.96) !important; -webkit-text-fill-color: #111827; }
-  .report-input::placeholder { color: #94a3b8 !important; }
-  .report-input[type="date"] { color-scheme: dark; cursor: pointer; color: #111827 !important; }
+  .report-input { min-height: 3.4rem; width: 100%; font-size: 1rem; color: #f5f7fb !important; background: rgba(255,255,255,.08) !important; -webkit-text-fill-color: #f5f7fb; border: 1px solid rgba(255,255,255,.12); box-shadow: inset 0 1px 0 rgba(255,255,255,.14), 0 10px 24px rgba(7,12,30,.14); caret-color: #f5f7fb; transition: background-color .22s ease, border-color .22s ease, box-shadow .22s ease, transform .22s ease, color .22s ease; }
+  .report-input::placeholder { color: #aeb8cf !important; transition: color .22s ease; }
+  .report-input[type="date"] { color-scheme: dark; cursor: pointer; color: #f5f7fb !important; }
   .report-input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1) brightness(1.15); cursor: pointer; }
   .report-input:focus,
   .report-input:active,
@@ -29,11 +29,16 @@ tailwind.config = { theme: { extend: { colors: { deep:"#020617", text:"#f5f7fb",
   .report-textarea:focus,
   .report-textarea:active {
     color: #111827 !important;
-    background: rgba(255,255,255,.96) !important;
+    background: rgba(255,255,255,.98) !important;
+    border-color: rgba(139,61,255,.42) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.48), 0 0 0 4px rgba(139,61,255,.12), 0 18px 36px rgba(7,12,30,.22);
+    transform: translateY(-1px);
     -webkit-text-fill-color: #111827;
   }
-  .report-textarea { min-height: 8.5rem; width: 100%; font-size: 1rem; resize: vertical; color: #111827 !important; background: rgba(255,255,255,.96) !important; -webkit-text-fill-color: #111827; }
-  .report-textarea::placeholder { color: #94a3b8 !important; }
+  .report-input:focus::placeholder,
+  .report-textarea:focus::placeholder { color: #a7b2c7 !important; }
+  .report-textarea { min-height: 8.5rem; width: 100%; font-size: 1rem; resize: vertical; color: #f5f7fb !important; background: rgba(255,255,255,.08) !important; -webkit-text-fill-color: #f5f7fb; border: 1px solid rgba(255,255,255,.12); box-shadow: inset 0 1px 0 rgba(255,255,255,.14), 0 10px 24px rgba(7,12,30,.14); caret-color: #f5f7fb; transition: background-color .22s ease, border-color .22s ease, box-shadow .22s ease, transform .22s ease, color .22s ease; }
+  .report-textarea::placeholder { color: #aeb8cf !important; transition: color .22s ease; }
   .report-file { width: 100%; overflow: hidden; }
   .report-feedback { word-break: break-word; }
   .fx-btn { position: relative; overflow: hidden; isolation: isolate; transition: transform .25s ease, box-shadow .25s ease, filter .25s ease; }
