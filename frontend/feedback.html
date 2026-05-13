@@ -122,7 +122,7 @@ document.getElementById("feedbackForm").addEventListener("submit", async (event)
     event.currentTarget.reset();
     selectedFeedbackRating = 5;
     renderFeedbackStars(selectedFeedbackRating);
-    feedbackStatus.textContent = "Feedback submitted successfully.";
+    feedbackStatus.textContent = "Thanks for your feedback! We will improve it!!";
     feedbackStatus.className = "feedback-status feedback-status--success";
   } catch (error) {
     feedbackStatus.textContent = error.message;
